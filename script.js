@@ -1,9 +1,9 @@
 const STATS = ['economy', 'security', 'people', 'technology'];
 const ICONS = {
-  economy: '$',
-  security: '!',
-  people: '#',
-  technology: '%'
+  economy: '€',
+  security: '⚔',
+  people: '☺',
+  technology: '⌁'
 };
 
 const questions = [
