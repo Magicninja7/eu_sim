@@ -43,7 +43,7 @@ const questions = [
   buildQuestion('AI algorithms discriminate!', 'Force to redesign algorithm', [-15, 0, 10, 10], 'Ignore issue', [0, 0, -15, -5]),
   buildQuestion('Kim Kardashian launches eco-friendly perfume line!', "How did this shit get on my desk?!", [0, 0, 0, 0], 'Invest EU funds', [-5, 0, 0, 0]),
   buildQuestion('George Clooney gets French citizenship!', "Seriously… this is my problem now?", [0, 0, 0, 0], 'Celebrate with decree', [0, 0, 5, 0]),
-  buildQuestion('Taylor Swift writes a song about inflation!', 'Commission follow-up study', [-5, 0, 5, 0], 'Its kindof good tho', [0, 0, 5, 0]),
+  buildQuestion('Taylor Swift writes a song!', 'Its shit', [0, 0, -5, 0], 'Its kindof good', [0, 0, 5, 0]),
   buildQuestion('Elon Musk tweets about EU bureaucracy!', "Subpoena him", [0, 0, 0, 0], 'Fine one of his companies', [-5, 10, 0, 5]),
   buildQuestion('Reality TV star becomes climate ambassador!', "Is this actually a thing?", [0, 0, 0, 0], 'Fund the campaign', [-5, 0, 5, 0]),
   buildQuestion('Celebrity chef opens a zero-carbon restaurant in Brussels!', "Why am I handling this?", [0, 0, 0, 0], 'How does that even work?', [0, 0, 0, 0]),
