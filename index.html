@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stavanger Decision Desk</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="canvas">
+    <header class="stats-panel" aria-label="City stats">
+      <div class="stat" data-key="economy">
+        <span class="icon" role="img" aria-label="economy">$</span>
+        <div class="meter" aria-hidden="true">
+          <div class="fill" id="fill-economy"></div>
+        </div>
+        <span class="value" id="value-economy">100</span>
+      </div>
+      <div class="stat" data-key="security">
+        <span class="icon" role="img" aria-label="security">!</span>
+        <div class="meter" aria-hidden="true">
+          <div class="fill" id="fill-security"></div>
+        </div>
+        <span class="value" id="value-security">100</span>
+      </div>
+      <div class="stat" data-key="people">
+        <span class="icon" role="img" aria-label="people">#</span>
+        <div class="meter" aria-hidden="true">
+          <div class="fill" id="fill-people"></div>
+        </div>
+        <span class="value" id="value-people">100</span>
+      </div>
+      <div class="stat" data-key="technology">
+        <span class="icon" role="img" aria-label="technology">%</span>
+        <div class="meter" aria-hidden="true">
+          <div class="fill" id="fill-technology"></div>
+        </div>
+        <span class="value" id="value-technology">100</span>
+      </div>
+    </header>
+
+    <section class="playfield">
+      <div class="answer answer-left">
+        <p id="answer-left-text"></p>
+      </div>
+
+      <div class="question-card" id="question-card" role="group" aria-live="polite">
+        <p id="question-text"></p>
+        <p class="card-hint">Drag the card and drop it on a side to decide.</p>
+      </div>
+
+      <div class="answer answer-right">
+        <p id="answer-right-text"></p>
+      </div>
+    </section>
+
+    <div class="status" id="status-message" role="status" aria-live="polite"></div>
+  </div>
+
+  <script src="script.js" type="module"></script>
+</body>
+</html>
