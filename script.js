@@ -100,7 +100,7 @@ function resetUI() {
   resetImpact();
   updateStatsUI();
   nextQuestion();
-  showStatus('Drag the card to the side you support.');
+  statusMessage.innerHTML = 'visit <a href="https://github.com/Magicninja7/eu_sim">the Github repo!</a>';
 }
 
 function nextQuestion() {
