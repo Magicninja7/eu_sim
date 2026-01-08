@@ -9,13 +9,14 @@ technology = 100
 # non-basic stats of the state the country is in
 # 0 - 100
 economic_ideology = 50 # libertarianism - state control
+
 social_policy = 50 # welfare state - sleeper state
-diplomatic_ideology = 50 # peacemaker - militarist
-authoritarianism = 50 # marxism - dictatorship
+diplomatic_ideology = 50 # peace - militarist
+authoritarianism = 50 # direct democracy - dictatorship
 green_policy = 50 # green - industry
 censorship = 50 # total freedom - preventive censorship
 polarisation = 50 # how polarised society
-terrorism = 50 # chance of attacks by people, not countries
+terrorism = 50 # chance of attacks by individual people, not countries
 foreign_diplomacy = 50 # isolationalism - globalism
 culture_policy = 50 # culture - technocracy
 integrationsim = 50 # europe of states - states of europe
@@ -25,11 +26,12 @@ integrationsim = 50 # europe of states - states of europe
 def econ():
     status = None
     if economic_ideology >70:
-        status = 'ST'
+        status = 'ST' # ST for state control
     elif economic_ideology < 30:
-        status = 'LI'
+        status = 'LI' # LI for libertarian
     else:
-        status = 'CE'
+        status = 'CE' # CE for centrist
+    
 
 
 
