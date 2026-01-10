@@ -17,7 +17,7 @@ green_policy = 50 # green - industry
 censorship = 50 # total freedom - preventive censorship
 polarisation = 50 # how polarised society
 terrorism = 50 # chance of attacks by individual people, not countries
-foreign_diplomacy = 50 # isolationalism - globalism
+foreign_policy = 50 # isolationalism - globalism
 culture_policy = 50 # culture - technocracy
 integrationsim = 50 # europe of states - states of europe
 
