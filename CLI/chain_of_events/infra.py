@@ -1,14 +1,9 @@
-class CountryState:
+class policies:
     def __init__(self):
         
         # economic policies
         self.economy = {
             'budget': 50, # bankrupt - rich
-            'taxation': {
-                "low": 10,
-                "medium": 30,
-                "high": 60,
-            },
             'minimum_wage': 2000, # in euro
             'vat': 15, # as percentage
             'public_spending': 80, # austerity - expansion
@@ -78,22 +73,21 @@ class CountryState:
             'migration_policy': 20, # closed for everyone - open borders
         }
 
-
-    def get_main_metrics(self):
-        return {
-            "economy": self.economic_ideology,
-            "security": self.social_policy,
-            "": self.diplomatic_ideology,
-            "authoritarianism": self.authoritarianism,
-            "green_policy": self.green_policy,
+        #taxes
+        self.taxation = {
+            'low': 30,
+            'medium': 40,
+            'high': 70,
         }
 
 
-class stat:
+
+class stats:
     def _init_(self):
         # stats/effects on country
         # workings of the state
         self.inner_workings = {
+            'legitimacy': 100, # repressive-dictatorship - democracy
             'state_capacity': 90, # failed state - ability to enforce will of the governemnt
             'corruption': 5, # clear institutions - kleptocracy
             'military_pos': 100, # politicised - independent
@@ -163,7 +157,3 @@ class stat:
             'trade_dep': 60, # autarky - can't-survive-w/imports/exports
             'intelligence_lvl': 85, # no-good-agency - can-do-anything
         }
-
-
-    def get_main_metrics(self):
-        pass

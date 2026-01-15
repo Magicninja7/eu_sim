@@ -118,8 +118,28 @@
 ## diplomatic-ideology (peace-aggresive)
 
 ### peace
+- Allies question commitment to collective defence
+- Foreign military performs excersises near your border!
+- Our leaked military plan is backing away and waiting for allies armies.
+- General critisises your neglecting of the army
+- Scandal! border guards withdraw after foreign troops enter en-mass into disputed territory!
+- Think tank reports we benefit from others' military spending!
+- Scandal - minister of defense the ammunition reserve will only last days
+- Military industry weakens; ammunition factories renovated to civil ones
+- Ally declares war on enemy country!
+- Mass civillian murder and war crimes right on our doorstep!
+- We are invited to a military allience against a rising power!
+- A foreign nation is caught hacking your government databases.
+- Budget surplus!
+- Human rights abuses are reported in a nation you buy 40% of your oil from.
 
 ### balance
+- Should announce a show of force - joint military drill?
+- You're left our of trading block!
+- 2 other countries are claiming your island
+
+
+
 
 ### aggresive
 
@@ -127,7 +147,10 @@
 
 
 
-
+Plots:
+the yugoslav plot -> aka mass war crimes on our doorstep
+attack plot -> border dispute turns into border conflict. maybe more escalation?
+unrest in enemy country
 
 
 # ideas
@@ -137,3 +160,12 @@ people: divided by: educated / noneducated | low / medium / high income
 events resulting from non-balance of anything, ex → farms lack workers (too much educated) | tax income falls (rich people left after price hikes)
 
 Map → wartime measures, army placement, concentration, plans, etc.
+
+
+
+
+
+
+
+policies = {'economy', 'politics', 'police', 'military', 'culture', 'environment', 'social'}
+stats = {'inner_workings', 'people', 'economy', 'securty', 'human_rights', 'demographics', 'diplomacy'}
