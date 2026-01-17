@@ -169,3 +169,5 @@ Map → wartime measures, army placement, concentration, plans, etc.
 
 policies = {'economy', 'politics', 'police', 'military', 'culture', 'environment', 'social'}
 stats = {'inner_workings', 'people', 'economy', 'securty', 'human_rights', 'demographics', 'diplomacy'}
+
+

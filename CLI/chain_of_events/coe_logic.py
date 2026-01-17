@@ -8,13 +8,27 @@ types_of_policies = {
     'environment': ['env_regulation', 'public_transport', 'energy_mix', 'carbon_zero'],
     'social': ['social_policy', 'labour_policy', 'healthcare_policy', 'unemployment_policy', 'pension_policy', 'education_policy', 'housing_policy', 'migration_policy']
 }
+types_of_stats = {
+    'inner_workings': ['legitimacy', 'state_capacity', 'corruption', 'military_pos', 'police_respect', 'rule_of_law', 'bureaucracy'],
+    'people': ['war_fatigue', 'polarisation', 'terrorism', 'civil_unrest', 'social_cohesion', 'revolutionary_sentiments'],      
+    'economy': ['hdi', 'inflation', 'unemployment', 'debt_to_gdp', 'innovation', 'big_business', 'income_inequality'],
+    'security': ['crime_rate', 'organised_crime', 'border_control', 'internal_security', 'cybersec', 'military_readiness'],
+    'human_rights': ['freedom_of_speech', 'freedom_of_press', 'freedom_of_assembly', 'freedom_of_religion', 'political_rights', 'minority_rights', 'due_process', 'freedom_to_privacy'],
+    'demographics': ['age_structure', 'population_growth', 'urbanization', 'education_lvl', 'avg_age'],
+    'diplomacy': ['diplo_reputation', 'alliance_pwr', 'soft_pwr', 'sanctions_press', 'trade_dep', 'intelligence_lvl']
+}
+
 
 
 class Event:
-    def __init__(self, id, description, effects, transitions):
+    def __init__(self, id, prerequisites, order_of_ops, title, description, effects_pol, effects_stat, transitions):
         self.id = id
+        self.prerequisites = prerequisites
+        self.order_of_ops = order_of_ops
+        self.title = title
         self.description = description
-        self.effects = effects
+        self.effects_pol = effects_pol
+        self.effects_stat = effects_stat
         self.transitions = transitions
 
     def available_choices(self, state):
@@ -43,15 +57,21 @@ class EventProcessor:
     def trigger(self, event_id):
         event = self.events[event_id]
         self.current_event_id = event_id
-        for k, v in event.effects.items():
+        for k, v in event.effects_pol.items():
             category = next((cat for cat, items in types_of_policies.items() if k in items), None)
             
             if category and hasattr(self.state, category):
                 category_dict = getattr(self.state, category) 
                 if k in category_dict:
                     category_dict[k] += v
-                    if category_dict[k] > 100:
-                        category_dict[k] = 100
+
+        for k, v in event.effects_stat.items():
+            category = next((cat for cat, items in types_of_stats.items() if k in items), None)
+            
+            if category and hasattr(self.state, category):
+                category_dict = getattr(self.state, category) 
+                if k in category_dict:
+                    category_dict[k] += v
         return event
 
     def choose(self, transition):

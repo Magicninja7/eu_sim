@@ -1,3 +1,25 @@
+types_of_policies = {
+    'economy': ['budget', 'minimum_wage', 'vat', 'public_spending', 'state_ownership', 'trade', 'labour_regulation', 'industry'],
+    'taxation': ['low', 'medium', 'high'],
+    'politics': ['authoritarianism', 'censorship', 'power_struggle', 'judicial_independence', 'election_fairness', 'surveillance', 'media_ownership', 'internet_regulation', 'ngo_regulation'],
+    'police': ['police_funding', 'police_style', 'prison_policy', 'death_pen'],
+    'military': ['military_budget', 'conscription', 'force_purpose', 'intervention', 'sanctions_policy', 'alliance_status', 'foreign_aid'],
+    'culture': ['religion_influence', 'nationalism', 'nation_ident', 'minority_autonomy'],
+    'environment': ['env_regulation', 'public_transport', 'energy_mix', 'carbon_zero'],
+    'social': ['social_policy', 'labour_policy', 'healthcare_policy', 'unemployment_policy', 'pension_policy', 'education_policy', 'housing_policy', 'migration_policy']
+}
+
+types_of_stats = {
+    'inner_workings': ['legitimacy', 'state_capacity', 'corruption', 'military_pos', 'police_respect', 'rule_of_law', 'bureaucracy'],
+    'people': ['war_fatigue', 'polarisation', 'terrorism', 'civil_unrest', 'social_cohesion', 'revolutionary_sentiments'],      
+    'economy': ['hdi', 'inflation', 'unemployment', 'debt_to_gdp', 'innovation', 'big_business', 'income_inequality'],
+    'security': ['crime_rate', 'organised_crime', 'border_control', 'internal_security', 'cybersec', 'military_readiness'],
+    'human_rights': ['freedom_of_speech', 'freedom_of_press', 'freedom_of_assembly', 'freedom_of_religion', 'political_rights', 'minority_rights', 'due_process', 'freedom_to_privacy'],
+    'demographics': ['age_structure', 'population_growth', 'urbanization', 'education_lvl', 'avg_age'],
+    'diplomacy': ['diplo_reputation', 'alliance_pwr', 'soft_pwr', 'sanctions_press', 'trade_dep', 'intelligence_lvl']
+}
+
+
 class policies:
     def __init__(self):
         
@@ -12,6 +34,14 @@ class policies:
             'labour_regulation': 90, # flexible - protective
             'industry': 30, # laisezz-faire - state-planning
         }
+
+        #taxes
+        self.taxation = {
+            'low': 30,
+            'medium': 40,
+            'high': 70,
+        }
+
  
         # inside politics policy
         self.politics = {
@@ -20,7 +50,7 @@ class policies:
             'power_struggle': 50, # EP dominance - EC dominance
             'judicial_independence': 100, # politicised-courts - judicial independence
             'election_fairness': 90, # rigged - democratic
-            'surveillence': 50, # total-privacy - surveillance state
+            'surveillance': 50, # total-privacy - surveillance state
             'media_ownership': 10, # completely private - fully public
             'internet_regulation': 30, # what can and cannot be posted on the internet
             'ngo_regulation': 60, # no-regulation - no-independence
@@ -38,9 +68,9 @@ class policies:
         self.military = {
             'military_budget': 3, # as percent of budget
             'conscription': 30, # none - mandatory
-            'force_purpous': 60, # defensive - expeditionary
+            'force_purpose': 60, # defensive - expeditionary
             'intervention': 40, # non-interventionist - interventionist
-            'sanctions_policy': 80, # dgaf - cooperative
+            'sanctions_policy': 80, # aggresive - cooperative
             'alliance_status': 100, # lone - unitary block
             'foreign_aid': 90, # none - a lot
         }
@@ -73,17 +103,11 @@ class policies:
             'migration_policy': 20, # closed for everyone - open borders
         }
 
-        #taxes
-        self.taxation = {
-            'low': 30,
-            'medium': 40,
-            'high': 70,
-        }
 
 
 
 class stats:
-    def _init_(self):
+    def __init__(self):
         # stats/effects on country
         # workings of the state
         self.inner_workings = {
@@ -91,7 +115,7 @@ class stats:
             'state_capacity': 90, # failed state - ability to enforce will of the governemnt
             'corruption': 5, # clear institutions - kleptocracy
             'military_pos': 100, # politicised - independent
-            'police_respect': 80, # fear
+            'police_respect': 80, # fear - respected
             'rule_of_law': 90, # arbitrary-verdicts - laws-respected
             'bureaucracy': 70, # no-administrative-overload-(effective bureaucracy) - administrative-overload
         }
@@ -120,9 +144,9 @@ class stats:
 
         #security
         self.security = {
-            'criminality': 50, # no crimes - lawlessness
+            'crime_rate': 50, # no crimes - lawlessness
             'organised_crime': 50, # non-existent - run the country
-            'border_security': 80, # free borders - no leaks
+            'border_control': 80, # free borders - no leaks
             'internal_security': 80, # no-defense - flawless-sec
             'cybersec': 80, # no-cybersec-defense - full-sec
             'military_readiness': 80, # symbolic - full_readiness
@@ -133,6 +157,7 @@ class stats:
             'freedom_of_speech': 90, # nothing - everything
             'freedom_of_press': 90, # only-approved - anything
             'freedom_of_assembly': 90, # only pro-gov - anything
+            'freedom_of_religion': 90, # banned-religions - all-religions
             'political_rights': 100, # no-democracy - citizens-democracy
             'minority_rights': 90, # holocaust-v2 - equality
             'due_process': 99, # lawlessness - correct judicial process
