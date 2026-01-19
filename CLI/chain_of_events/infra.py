@@ -156,7 +156,7 @@ class stats:
         self.human_rights = {
             'freedom_of_speech': 90, # nothing - everything
             'freedom_of_press': 90, # only-approved - anything
-            'freedom_of_assembly': 90, # only pro-gov - anything
+            'freedom_of_assembly': 70, # only pro-gov - anything
             'freedom_of_religion': 90, # banned-religions - all-religions
             'political_rights': 100, # no-democracy - citizens-democracy
             'minority_rights': 90, # holocaust-v2 - equality

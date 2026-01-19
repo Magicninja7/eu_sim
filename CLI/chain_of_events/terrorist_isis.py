@@ -4,6 +4,7 @@ policy_state=policies()
 stats=stats()
 
 EVENTS_TERRORIST_ISIS_1 = {}
+EVENTS_TERRORIST_ISIS_1['name'] = 'TERRORIST_ISIS_1'
 EVENTS_TERRORIST_ISIS_1['internet_campaign'] = Event(
     id='internet_campaign',
     prerequisites=[True],
@@ -16,12 +17,12 @@ EVENTS_TERRORIST_ISIS_1['internet_campaign'] = Event(
         Transition(
             label='Open an investigation',
             condition=lambda state: True,
-            target_event_id='teens_join_isis'
+            target_event_id=None
         ),
         Transition(
             label="Take all the posts down, and threaten to take down websites that don't!",
             condition=lambda state: stats.security['cybersec'] > 60,
-            target_event_id='free_speech_pushback'
+            target_event_id=None
         )
     ]
 )

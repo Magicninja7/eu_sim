@@ -1,13 +1,14 @@
 from coe_logic import Event, Transition, EventProcessor
 from infra import stats, policies
 policy_state = policies()
-stats = stats()
+stats_country = stats()
 
 
 EVENTS_POLARISATION = {}
+EVENTS_POLARISATION['name'] = 'POLARISATION'
 EVENTS_POLARISATION["1st_election"] = Event(
-    id="1st_election",
-    prerequisites=[False],
+    id='1st_election',
+    prerequisites=[True],
     order_of_ops=0,
     title='You are elected Commissioner!',
     description="On the 15th of January 2026 you have been elected as the new Commisioner of the EU. You pulled record-breaking number of votes, 86% of the popular vote, uniting both sides of the political spectrum.",
@@ -17,69 +18,81 @@ EVENTS_POLARISATION["1st_election"] = Event(
         Transition(
             label="Yay",
             condition=lambda state: True, #condition=lambda state: stats.politics["authoritarianism"] >= 40,
-            target_event_id="unrest"
+            target_event_id="popularity_plummets"
         ),
         Transition(
             label="Time to celebrate!",
-            condition=lambda state: True
-            target_event_id="unrest"
+            condition=lambda state: True,
+            target_event_id="popularity_plummets"
+        )
+    ]
+)  
+EVENTS_POLARISATION["popularity_plummets"] = Event(
+    id='popularity_plummets',
+    prerequisites=[True],
+    order_of_ops=1,
+    title='Popularity among left/left-leaning voters plummets!',
+    description="Your decisions have created a division between them, and your more conservative followers. This also results in a rapid decline of you popularity, to barealy 54%.",
+    effects_pol={},
+    effects_stat={},
+    transitions=[
+        Transition(
+            label="Find common ground and appease them",
+            condition=lambda state: True, #condition=lambda state: stats.politics["authoritarianism"] >= 40,
+            target_event_id="talks"
+        ),
+        Transition(
+            label="Hold my ground, no concessions",
+            condition=lambda state: stats_country.human_rights['freedom_of_assembly'] < 80,
+            target_event_id="division"
+        )
+    ]
+)   
+EVENTS_POLARISATION["talks"] = Event(
+    id='talks',
+    prerequisites=[True],
+    order_of_ops=2,
+    title='Talks with the opposition are drawing out!',
+    description="The opposition has proven innefective after over 1month of talks. They are demanding more and more radical decisions from us. We must do somthing!",
+    effects_pol={},
+    effects_stat={},
+    transitions=[
+        Transition(
+            label="Continue talks until a mutually benefical decision is reached",
+            condition=lambda state: True, #condition=lambda state: stats.politics["authoritarianism"] >= 40,
+            target_event_id="talks"
+        ),
+        Transition(
+            label="Cave to the opposition",
+            condition=lambda state: True,
+            target_event_id="None"
+        ),
+        Transition(
+            label="Ditch the talks",
+            condition=lambda state:True,
+            target_event_id="division"
+        )
+    ]
+)  
+EVENTS_POLARISATION["division"] = Event(
+    id='division',
+    prerequisites=[stats_country.human_rights['freedom_of_assembly'] > 90, True],
+    order_of_ops=2,
+    title='The opposition rallies people against you!',
+    description="The people came to the streets to protest your recent actions!",
+    effects_pol={},
+    effects_stat={},
+    transitions=[
+        Transition(
+            label="Find common ground with the other side & appease",
+            condition=lambda state: True, #condition=lambda state: stats.politics["authoritarianism"] >= 40,
+            target_event_id="talks"
+        ),
+        Transition(
+            label="Hold the ground, no concessions",
+            condition=lambda state: True,
+            target_event_id="division"
         )
     ]
 )  
 
-
-def main():
-
-    curr_opp = 0 # current order of operations event
-
-    # list of id's of events based of order_of_ops
-    ids = [e.id for e in EVENTS_POLARISATION.values() if getattr(e, "order_of_ops", None) == curr_opp]
-    ids_not_ready = []
-    for idd in ids:
-        #check if prerequisites met
-        x = EVENTS_POLARISATION[idd].prerequisites
-        y = True
-        for a in x:
-            if a == False:
-                y = False
-                ids.remove(idd)
-                ids_not_ready.append(idd)
-                break
-
-    
-    # add event to txt
-    '''
-    path = 'C:\\Users\\jtpta\\OneDrive\\Pulpit\\personal\\stavanger_app\\web\\CLI\\chain_of_events\\ready.txt'
-    lines_to_add = {f'POLARISATION,{i},{curr_opp}\n' for i in ids}
-    with open(path, 'a+', encoding='utf-8') as f:
-        f.seek(0)
-        existing = set(f.readlines())
-        for line in sorted(lines_to_add - existing):
-            f.write(line)
-    
-    path = 'C:\\Users\\jtpta\\OneDrive\\Pulpit\\personal\\stavanger_app\\web\\CLI\\chain_of_events\\not_ready.txt'
-    lines_to_add = {f'POLARISATION,{i},{curr_opp}\n' for i in ids_not_ready}
-    with open(path, 'a+', encoding='utf-8') as f:
-        f.seek(0)
-        existing = set(f.readlines())
-        for line in sorted(lines_to_add - existing):
-            f.write(line)
-    '''
-
-    # trigger events
-    '''
-    engine = EventProcessor(EVENTS_POLARISATION, policy_state)
-
-    event = engine.trigger("protests")
-
-    print(event.description)
-    choices = event.available_choices(policy_state)
-
-    for i, choice in enumerate(choices):
-        print(f"{i}: {choice.label}")
-    selection = int(input("Choose: "))
-
-    next_event_id = engine.choose(choices[selection])
-
-    print(policy_state.economy['budget'])
-    '''
