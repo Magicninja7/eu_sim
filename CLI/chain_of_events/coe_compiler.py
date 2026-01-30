@@ -1,5 +1,6 @@
-from coe_logic import Event, Transition, EventProcessor
+from coe_logic import EventProcessor
 from infra import stats, policies
+import random
 policy_state=policies()
 stats=stats()
 
@@ -101,7 +102,6 @@ def write_events_to_files(EVENTS):
 
     write_to_files(set(ids), set(not_ids))
 
-
 def open_ready_events():
     temp_possible = []
     path = 'C:\\Users\\jtpta\\OneDrive\\Pulpit\\personal\\stavanger_app\\web\\CLI\\chain_of_events\\ready.txt'
@@ -118,7 +118,6 @@ def open_ready_events():
 
     return temp_possible
       
-
 def game_simul():
     possible_ev = open_ready_events()
 
@@ -129,7 +128,7 @@ def game_simul():
             quit()
 
 
-        coe_name, event_name = possible_ev.pop(0)
+        coe_name, event_name = possible_ev.pop(random.randint(0, len(possible_ev)-1))
 
         engine = EventProcessor(NAMES[coe_name], policy_state)
 
@@ -155,20 +154,5 @@ def game_simul():
             NXT_EVENT[f'EVENTS_{coe_name}'] = next_event_id
         write_events_to_files(EVENTS)
 
-# todo finish parsing lines in the events that meet prerqusisites
-
-    
-
-
-
-
-
-
-
-
-
-
-
 write_events_to_files(EVENTS)
-
 game_simul()

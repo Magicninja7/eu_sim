@@ -25,35 +25,35 @@ class policies:
         
         # economic policies
         self.economy = {
-            'budget': 50, # bankrupt - rich
+            'budget_deficit': -20, # in percentage of budget
             'minimum_wage': 2000, # in euro
             'vat': 15, # as percentage
-            'public_spending': 80, # austerity - expansion
+            'public_spending': 100, # austerity - expansion
             'state_ownership': 30, # privatisation - nationalisation
             'trade': 80, # free-trade - protectionism
-            'labour_regulation': 90, # flexible - protective
+            'labour_regulation': 100, # flexible - protective
             'industry': 30, # laisezz-faire - state-planning
         }
 
         #taxes
         self.taxation = {
             'low': 30,
-            'medium': 40,
-            'high': 70,
+            'medium': 60,
+            'high': 90,
         }
 
  
         # inside politics policy
         self.politics = {
-            'authoritarianism': 50, # direct democracy - power of one
-            'censorship': 70, # preventive censorship - complete freedom of speech
+            'authoritarianism': 10, # direct democracy - power of one
+            'censorship': 90, # preventive censorship - complete freedom of speech
             'power_struggle': 50, # EP dominance - EC dominance
             'judicial_independence': 100, # politicised-courts - judicial independence
             'election_fairness': 90, # rigged - democratic
-            'surveillance': 50, # total-privacy - surveillance state
-            'media_ownership': 10, # completely private - fully public
+            'surveillance': 70, # total-privacy - surveillance state
+            'media_ownership': 40, # completely private - fully public
             'internet_regulation': 30, # what can and cannot be posted on the internet
-            'ngo_regulation': 60, # no-regulation - no-independence
+            'ngo_regulation': 20, # no-regulation - no-independence
         }
 
         # Police
@@ -66,7 +66,7 @@ class policies:
 
         # military / foreign-policy
         self.military = {
-            'military_budget': 3, # as percent of budget
+            'military_budget': 3.5, # as percent of budget
             'conscription': 30, # none - mandatory
             'force_purpose': 60, # defensive - expeditionary
             'intervention': 40, # non-interventionist - interventionist
@@ -80,7 +80,7 @@ class policies:
             'religion_influence': 0, # secular - theocratic
             'nationalism': 50, # cosmopolitanism - nationalism
             'nation_ident': 40, # people - ethnicity
-            'minority_autonomy': 90, # repression - free to practise
+            'minority_autonomy': 70, # repression - free to practise
         }
 
         #environment
@@ -93,14 +93,14 @@ class policies:
 
         # social policy
         self.social = {
-            'social_policy': 50, # minimum-life - universal coverage
+            'social_policy': 80, # minimum-life - universal coverage
             'labour_policy': 80, # employer-friendly - worker-friendly
-            'healthcare_policy': 70, # full-private - full-public
+            'healthcare_policy': 90, # full-private - full-public
             'unemployment_policy': 80, # none - livable
-            'pension_policy': 95, # private - public
+            'pension_policy': 95, # no-money - a-lot-investment
             'education_policy': 95, # privatised - public
             'housing_policy': 30, # market-based - state-housing
-            'migration_policy': 20, # closed for everyone - open borders
+            'migration_policy': 60, # closed for everyone - open borders
         }
 
 
@@ -108,6 +108,18 @@ class policies:
 
 class stats:
     def __init__(self):
+        # economy
+        self.economy = {
+            'gdp': 10000000, # in mln
+            'hdi': 91, # HDi*100
+            'inflation': 2, # percentage of inflation
+            'unemployment': 6, # 0-100 %
+            'debt_to_gdp': 0, # 0: none, 100: equal to gdp
+            'innovation': 50, # stagnation - best
+            'big_business': 12, # number of companies in top100 
+            'income_inequality': 40, # gini coefficient, from 0 to 100
+        }
+
         # stats/effects on country
         # workings of the state
         self.inner_workings = {
@@ -120,36 +132,14 @@ class stats:
             'bureaucracy': 70, # no-administrative-overload-(effective bureaucracy) - administrative-overload
         }
 
-
-        # people & political stability
-        self.people = {
-            'war_fatigue': 0, # no-war 0 high fatigue
-            'polarisation': 50, # variety-of-views - unitary-views
-            'terrorism': 50, # no-risk - inevetable
-            'civil_unrest': 10, # calm - riots
-            'social_cohesion': 70, # divided-society - unified-society
-            'revolutionary_sentiments': 1, # calm - storm the bastille!
-        }
-
-        # economy
-        self.economy = {
-            'hdi': 91, # HDi*100
-            'inflation': 2, # percentage of inflation
-            'unemployment': 6, # 0-100 %
-            'debt_to_gdp': 0, # 0: none, 100: equal to gdp
-            'innovation': 50, # stagnation - best
-            'big_business': 12, # number of companies in top100 
-            'income_inequality': 40, # gini coefficient, from 0 to 100
-        }
-
-        #security
-        self.security = {
-            'crime_rate': 50, # no crimes - lawlessness
-            'organised_crime': 50, # non-existent - run the country
-            'border_control': 80, # free borders - no leaks
-            'internal_security': 80, # no-defense - flawless-sec
-            'cybersec': 80, # no-cybersec-defense - full-sec
-            'military_readiness': 80, # symbolic - full_readiness
+        # diplomacy
+        self.diplomacy = {
+            'diplo_reputation': 90, # forgetable - important player
+            'alliance_pwr': 100, # isolated - united
+            'soft_pwr': 80, # no-cultural-exports - known-everywhere
+            'sanctions_press': 0, # no-noticable-effect - crippled
+            'trade_dep': 60, # autarky - can't-survive-w/imports/exports
+            'intelligence_lvl': 85, # no-good-agency - can-do-anything
         }
 
         # human rights
@@ -164,6 +154,18 @@ class stats:
             'freedom_to_privacy': 60, # spy-state - right-to-privacy
         }
 
+        #security
+        self.security = {
+            'crime_rate': 50, # no crimes - lawlessness
+            'organised_crime': 50, # non-existent - run the country
+            'border_control': 80, # common-illegal-crossings - no-leaks
+            'internal_security': 80, # no-defense - flawless-sec
+            'cybersec': 80, # no-cybersec-defense - full-sec
+            'military_readiness': 80, # symbolic - full_readiness
+        }
+
+
+
         # demographics
         self.demographics = {
             'age_structure': 55, # avrg age
@@ -173,12 +175,15 @@ class stats:
             'avg_age': 81.5, # as average age
         }
 
-        # diplomacy
-        self.diplomacy = {
-            'diplo_reputation': 90, # forgetable - important player
-            'alliance_pwr': 100, # isolated - united
-            'soft_pwr': 80, # no-cultural-exports - known-everywhere
-            'sanctions_press': 0, # no-noticable-effect - crippled
-            'trade_dep': 60, # autarky - can't-survive-w/imports/exports
-            'intelligence_lvl': 85, # no-good-agency - can-do-anything
+        # people & political stability
+        self.people = {
+            'migration_rate': 2.0, # net migration rate per 1000 people
+            'war_fatigue': 0, # no-war 0 high fatigue
+            'polarisation': 50, # variety-of-views - unitary-views
+            'terrorism': 50, # no-risk - inevetable
+            'civil_unrest': 10, # calm - riots
+            'social_cohesion': 70, # divided-society - unified-society
+            'revolutionary_sentiments': 1, # calm - storm the bastille!
         }
+
+
