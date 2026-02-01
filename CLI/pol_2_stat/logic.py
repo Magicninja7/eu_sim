@@ -1,4 +1,5 @@
 import math
+import copy
 import sys
 from pathlib import Path
 
@@ -8,13 +9,18 @@ if str(ROOT) not in sys.path:
 
 from stavanger_app.web.CLI.chain_of_events.infra import policies, stats
 
-stat = stats()
+
+_NORM_STAT = stats()
 policy = policies()
+stat = copy.deepcopy(_NORM_STAT)
+
+
+# i should be writing my TO instead of coding this mess
 
 def _clamp(x: float, lo: float, hi: float) -> float:
     return max(lo, min(hi, x))
 
-def economy_policy2stats(policy_state: policies = policy, stat_state: stats = stat) -> dict:
+def economy_policy2stats(policy_state, stat_state) -> dict:
     gdp = float(stat_state.economy.get('gdp', 0) or 0)
     gdp = max(gdp, 1.0)
 
@@ -123,7 +129,6 @@ def economy_policy2stats(policy_state: policies = policy, stat_state: stats = st
         100.0,
     )
 
-    # Write back to stats (note: key is 'income_inequality' in infra.py)
     stat_state.economy.update(
         {
             "hdi": round(hdi, 2),
@@ -137,7 +142,7 @@ def economy_policy2stats(policy_state: policies = policy, stat_state: stats = st
     )
     return stat_state.economy
 
-def innerworkings_policy2stats(policy_state: policies = policy, stat_state: stats = stat) -> dict:
+def innerworkings_policy2stats(policy_state, stat_state) -> dict:
     gdp = float(stat_state.economy.get("gdp", 0) or 0)
     gdp = max(gdp, 1.0)
 
@@ -209,7 +214,7 @@ def innerworkings_policy2stats(policy_state: policies = policy, stat_state: stat
     military_pos = _clamp(military_pos, 0.0, 100.0)
 
     police_respect = (
-        62.0
+        60.0
         - abs(float(police["police_style"]) - 55.0) * 0.40
         - (float(police["prison_policy"]) - 50.0) * 0.22
         - (float(police["death_pen"]) - 50.0) * 0.18
@@ -221,7 +226,7 @@ def innerworkings_policy2stats(policy_state: policies = policy, stat_state: stat
     police_respect = _clamp(police_respect, 0.0, 100.0)
 
     rule_of_law = (
-        56.0
+        55.0
         + (float(pol["judicial_independence"]) - 50.0) * 0.45
         + (float(pol["election_fairness"]) - 50.0) * 0.22
         - abs(float(police["police_funding"]) - 60.0) * 0.25
@@ -235,7 +240,7 @@ def innerworkings_policy2stats(policy_state: policies = policy, stat_state: stat
     rule_of_law = _clamp(rule_of_law, 0.0, 100.0)
 
     bureaucracy = (
-        42.0
+        40.0
         + (float(econ["public_spending"]) - 50.0) * 0.26
         + (float(econ["state_ownership"]) - 50.0) * 0.22
         + (float(econ["labour_regulation"]) - 50.0) * 0.20
@@ -259,7 +264,7 @@ def innerworkings_policy2stats(policy_state: policies = policy, stat_state: stat
     )
     return stat_state.inner_workings
 
-def humanrights_policy2stats(policy_state: policies = policy, stat_state: stats = stat) -> dict:
+def humanrights_policy2stats(policy_state, stat_state) -> dict:
     gdp = float(stat_state.economy.get("gdp", 0) or 0)
     gdp = max(gdp, 1.0)
 
@@ -366,7 +371,7 @@ def humanrights_policy2stats(policy_state: policies = policy, stat_state: stats 
     )
     return stat_state.human_rights
 
-def security_policy2stats(policy_state: policies = policy, stat_state: stats = stat) -> dict:
+def security_policy2stats(policy_state, stat_state) -> dict:
     gdp = float(stat_state.economy.get("gdp", 0) or 0)
     gdp = max(gdp, 1.0)
     gdp_scale = _clamp((math.log10(gdp) - 3.5) * 12.0, 0.0, 30.0)
@@ -382,7 +387,7 @@ def security_policy2stats(policy_state: policies = policy, stat_state: stats = s
         20.0
         + (float(pol['surveillance']) - 50.0) * 0.30
         + (100.0 - float(police['police_funding']) - 50.0) * 0.25
-        + (float(soc['social_policy'] - 60.0)) * 0.20
+        + (float(soc['social_policy']) - 60.0) * 0.20
         + (float(soc['housing_policy']) - 60.0) * 0.15
         - (100.0 - police['police_style'] - 50.0) * 0.15
         - (100.0 - police['prison_policy'] - 50.0) * 0.15
@@ -395,7 +400,7 @@ def security_policy2stats(policy_state: policies = policy, stat_state: stats = s
         25.0
         - float(pol['surveillance']) * 0.20
         + (100.0 - float(police['police_funding']) - 50.0) * 0.35
-        + (float(soc['social_policy'] - 60.0)) * 0.20
+        + (float(soc['social_policy']) - 60.0) * 0.20
         + (float(soc['housing_policy']) - 60.0) * 0.25
         + (100.0 - police['police_style'] - 50.0) * 0.15
         + (100.0 - police['prison_policy'] - 50.0) * 0.15
@@ -419,7 +424,7 @@ def security_policy2stats(policy_state: policies = policy, stat_state: stats = s
         + (float(police['police_funding']) - 50.0) * 0.30
         + float(pol['internet_regulation']) * 0.35
         + float(police['police_funding']) * 0.35
-        + float(mil["military_budget"] - 2) * 20.00
+        + (float(mil["military_budget"]) - 2.0) * 20.00
         + gdp_scale * 0.08
     )
     internal_security = _clamp(internal_security, 0.0, 100.0)
@@ -430,7 +435,7 @@ def security_policy2stats(policy_state: policies = policy, stat_state: stats = s
         + (100.0 - float(pol['censorship']) - 40.0) * 0.20
         + float(pol['surveillance']) * 0.25
         + (float(pol['internet_regulation']) - 40.0) * 0.30
-        + float(police['police_funding'] - 30.0) * 0.40
+        + (float(police['police_funding']) - 30.0) * 0.40
         - gdp_scale * 0.40
     )
     cybersec = _clamp(cybersec, 1.0, 100.0)
@@ -440,7 +445,7 @@ def security_policy2stats(policy_state: policies = policy, stat_state: stats = s
         + float(pol['authoritarianism']) * 0.15
         + (float(mil["military_budget"]) - 2.0) * 30.00
         + (float(mil['conscription']) - 40.0) * 0.20
-        + float(mil['alliance_status'] - 60.0) * 0.25
+        + (float(mil['alliance_status']) - 60.0) * 0.25
         + gdp_scale * 0.10
     )
     military_readiness = _clamp(military_readiness, 0.0, 100.0)
@@ -457,7 +462,7 @@ def security_policy2stats(policy_state: policies = policy, stat_state: stats = s
     )
     return stat_state.security
 
-def democraphics_policy2stats(policy_state: policies = policy, stat_state: stats = stat):
+def democraphics_policy2stats(policy_state, stat_state):
     gdp = float(stat_state.economy.get("gdp", 0) or 0)
     gdp = max(gdp, 1.0)
     gdp_scale = _clamp((math.log10(gdp) - 3.5) * 12.0, 0.0, 30.0)
@@ -465,7 +470,6 @@ def democraphics_policy2stats(policy_state: policies = policy, stat_state: stats
     eco = policy_state.economy
     pol = policy_state.politics
     soc = policy_state.social
-
 
     age_structure = (
         30.0
@@ -490,7 +494,7 @@ def democraphics_policy2stats(policy_state: policies = policy, stat_state: stats
     urbanization = (
         50.0
         + float(soc['education_policy']) * 0.30
-        - float(soc['housing_policy'] - 50.0) * 0.25
+        - (float(soc['housing_policy']) - 50.0) * 0.25
         + float(eco['industry']) * 0.20
         + gdp_scale * 0.10
         - float(soc['migration_policy']) * 0.15
@@ -517,7 +521,6 @@ def democraphics_policy2stats(policy_state: policies = policy, stat_state: stats
     )
     avg_age = _clamp(avg_age, 0.0, 100.0)
 
-
     stat_state.demographics.update(
         {
             "age_structure": round(age_structure, 2),
@@ -529,7 +532,7 @@ def democraphics_policy2stats(policy_state: policies = policy, stat_state: stats
     )
     return stat_state.demographics
 
-def people_policy2stats(policy_state: policies = policy, stat_state: stats = stat):
+def people_policy2stats(policy_state, stat_state):
     gdp = float(stat_state.economy.get("gdp", 0) or 0)
     gdp = max(gdp, 1.0)
     gdp_scale = _clamp((math.log10(gdp) - 3.5) * 12.0, 0.0, 30.0)
@@ -544,7 +547,7 @@ def people_policy2stats(policy_state: policies = policy, stat_state: stats = sta
 
     migration_rate = (
         + gdp_scale * 0.20
-        + float(soc['migration_policy'] - 60.0) * 0.20
+        + (float(soc['migration_policy']) - 60.0) * 0.20
         + (float(pol['censorship']) - 60.0) * 0.15
         + (float(pol['judicial_independence']) - 50.0) * 0.15
         + float(soc['social_policy']) * 0.20
@@ -554,7 +557,6 @@ def people_policy2stats(policy_state: policies = policy, stat_state: stats = sta
         + (float(cul['minority_autonomy']) - 50.0) * 0.30
     )
     migration_rate = _clamp(migration_rate, 1.0, 100.0)
-
 
     war_fatigue = (
         30.0
@@ -636,7 +638,6 @@ def people_policy2stats(policy_state: policies = policy, stat_state: stats = sta
     )
     revolutionary_sentiments = _clamp(revolutionary_sentiments, 0.0, 100.0)
 
-    
     stat_state.people.update(
         {
             "migration_rate": round(migration_rate, 2),
@@ -650,7 +651,14 @@ def people_policy2stats(policy_state: policies = policy, stat_state: stats = sta
     )
     return stat_state.people
 
-
+def do_all(policy_state, stat_state):
+    economy_policy2stats(policy_state, stat_state)
+    innerworkings_policy2stats(policy_state, stat_state)
+    humanrights_policy2stats(policy_state, stat_state)
+    security_policy2stats(policy_state, stat_state)
+    democraphics_policy2stats(policy_state, stat_state)
+    people_policy2stats(policy_state, stat_state)
+    return stat_state
 
 if __name__ == "__main__":
-    print(people_policy2stats(policy, stat))
+    pass

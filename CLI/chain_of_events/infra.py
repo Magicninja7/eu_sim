@@ -10,13 +10,13 @@ types_of_policies = {
 }
 
 types_of_stats = {
+    'economy': ['gdp', 'hdi', 'inflation', 'unemployment', 'debt_to_gdp', 'innovation', 'big_business', 'income_inequality'],
     'inner_workings': ['legitimacy', 'state_capacity', 'corruption', 'military_pos', 'police_respect', 'rule_of_law', 'bureaucracy'],
-    'people': ['war_fatigue', 'polarisation', 'terrorism', 'civil_unrest', 'social_cohesion', 'revolutionary_sentiments'],      
-    'economy': ['hdi', 'inflation', 'unemployment', 'debt_to_gdp', 'innovation', 'big_business', 'income_inequality'],
-    'security': ['crime_rate', 'organised_crime', 'border_control', 'internal_security', 'cybersec', 'military_readiness'],
+    'diplomacy': ['diplo_reputation', 'alliance_pwr', 'soft_pwr', 'sanctions_press', 'trade_dep', 'intelligence_lvl'],
     'human_rights': ['freedom_of_speech', 'freedom_of_press', 'freedom_of_assembly', 'freedom_of_religion', 'political_rights', 'minority_rights', 'due_process', 'freedom_to_privacy'],
+    'security': ['crime_rate', 'organised_crime', 'border_control', 'internal_security', 'cybersec', 'military_readiness'],
     'demographics': ['age_structure', 'population_growth', 'urbanization', 'education_lvl', 'avg_age'],
-    'diplomacy': ['diplo_reputation', 'alliance_pwr', 'soft_pwr', 'sanctions_press', 'trade_dep', 'intelligence_lvl']
+    'people': ['migration_rate', 'war_fatigue', 'polarisation', 'terrorism', 'civil_unrest', 'social_cohesion', 'revolutionary_sentiments']
 }
 
 
@@ -78,7 +78,7 @@ class policies:
         # culture
         self.culture = {
             'religion_influence': 0, # secular - theocratic
-            'nationalism': 50, # cosmopolitanism - nationalism
+            'nationalism': 60, # cosmopolitanism - nationalism
             'nation_ident': 40, # people - ethnicity
             'minority_autonomy': 70, # repression - free to practise
         }
@@ -186,4 +186,82 @@ class stats:
             'revolutionary_sentiments': 1, # calm - storm the bastille!
         }
 
+class last_incrimentation:
+    def __init__(self):
+        # economy
+        self.economy = {
+            'gdp': 0, # in mln
+            'hdi': 0, # HDi*100
+            'inflation': 0, # percentage of inflation
+            'unemployment': 0, # 0-100 %
+            'debt_to_gdp': 0, # 0: none, 100: equal to gdp
+            'innovation': 0, # stagnation - best
+            'big_business': 0, # number of companies in top100 
+            'income_inequality': 0, # gini coefficient, from 0 to 100
+        }
 
+        # stats/effects on country
+        # workings of the state
+        self.inner_workings = {
+            'legitimacy': 0, # repressive-dictatorship - democracy
+            'state_capacity': 0, # failed state - ability to enforce will of the governemnt
+            'corruption': 0, # clear institutions - kleptocracy
+            'military_pos': 0, # politicised - independent
+            'police_respect': 0, # fear - respected
+            'rule_of_law': 0, # arbitrary-verdicts - laws-respected
+            'bureaucracy': 0, # no-administrative-overload-(effective bureaucracy) - administrative-overload
+        }
+
+        # diplomacy
+        self.diplomacy = {
+            'diplo_reputation': 0, # forgetable - important player
+            'alliance_pwr': 0, # isolated - united
+            'soft_pwr': 0, # no-cultural-exports - known-everywhere
+            'sanctions_press': 0, # no-noticable-effect - crippled
+            'trade_dep': 0, # autarky - can't-survive-w/imports/exports
+            'intelligence_lvl': 0, # no-good-agency - can-do-anything
+        }
+
+        # human rights
+        self.human_rights = {
+            'freedom_of_speech': 0, # nothing - everything
+            'freedom_of_press': 0, # only-approved - anything
+            'freedom_of_assembly': 0, # only pro-gov - anything
+            'freedom_of_religion': 0, # banned-religions - all-religions
+            'political_rights': 0, # no-democracy - citizens-democracy
+            'minority_rights': 0, # holocaust-v2 - equality
+            'due_process': 0, # lawlessness - correct judicial process
+            'freedom_to_privacy': 0, # spy-state - right-to-privacy
+        }
+
+        #security
+        self.security = {
+            'crime_rate': 0, # no crimes - lawlessness
+            'organised_crime': 0, # non-existent - run the country
+            'border_control': 0, # common-illegal-crossings - no-leaks
+            'internal_security': 0, # no-defense - flawless-sec
+            'cybersec': 0, # no-cybersec-defense - full-sec
+            'military_readiness': 0, # symbolic - full_readiness
+        }
+
+
+
+        # demographics
+        self.demographics = {
+            'age_structure': 55, # avrg age
+            'population_growth': 1.4, # average children per woman
+            'urbanization': 75, # as percentage of people living in urban areas
+            'education_lvl': 45, # as ercentage of bachalor-educated people
+            'avg_age': 81.5, # as average age
+        }
+
+        # people & political stability
+        self.people = {
+            'migration_rate': 2.0, # net migration rate per 1000 people
+            'war_fatigue': 0, # no-war 0 high fatigue
+            'polarisation': 50, # variety-of-views - unitary-views
+            'terrorism': 50, # no-risk - inevetable
+            'civil_unrest': 10, # calm - riots
+            'social_cohesion': 70, # divided-society - unified-society
+            'revolutionary_sentiments': 1, # calm - storm the bastille!
+        }
