@@ -34,11 +34,3 @@ def go_thru(main_stats, stats_togo, las_increment, types_of_stats):
     return main_stats, las_increment
                     
                     
-
-
-if __name__ == "__main__":
-    for i in range(6):
-        go_thru()
-        print(f'iteration {i}')
-        print(stats_togo.security['crime_rate'])
-        print(main_stats.security['crime_rate'])
