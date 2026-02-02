@@ -1,21 +1,3 @@
-from coe_logic import EventProcessor
-from infra import stats, policies
-import random
-policy_state=policies()
-stats=stats()
-
-from polarisation import EVENTS_POLARISATION
-from terrorist_isis import EVENTS_TERRORIST_ISIS_1
-EVENTS = [EVENTS_POLARISATION, EVENTS_TERRORIST_ISIS_1]
-CURR_OP = {'EVENTS_POLARISATION': 0, 'EVENTS_TERRORIST_ISIS_1': 0}
-NXT_EVENT = {'EVENTS_POLARISATION': None, 'EVENTS_TERRORIST_ISIS_1': None}
-
-NAMES = {
-    'POLARISATION': EVENTS_POLARISATION,
-    'TERRORIST_ISIS_1': EVENTS_TERRORIST_ISIS_1
-}
-
-possible_ev = []
 
 
 def check_prerequisites(NAMES):
@@ -62,7 +44,8 @@ def check_prerequisites(NAMES):
         for para in not_ready:
             f.write(para)
 
-def write_events_to_files(EVENTS):
+def write_events_to_files(EVENTS, CURR_OP, NXT_EVENT, NAMES):
+    import random
     def write_to_files(ids, not_ids):
         # add event to txt
         path = 'C:\\Users\\jtpta\\OneDrive\\Pulpit\\personal\\stavanger_app\\web\\CLI\\chain_of_events\\ready.txt'
@@ -100,9 +83,11 @@ def write_events_to_files(EVENTS):
         ids = ids + [f'{event['name']},{i},{curr_opp}\n' for i in temp_ids]
         not_ids = not_ids + [f'{event['name']},{i},{curr_opp}\n' for i in temp_not_ids]
 
+    random.shuffle(ids)
+    random.shuffle(not_ids)
     write_to_files(set(ids), set(not_ids))
 
-def open_ready_events():
+def open_ready_events(CURR_OP):
     temp_possible = []
     path = 'C:\\Users\\jtpta\\OneDrive\\Pulpit\\personal\\stavanger_app\\web\\CLI\\chain_of_events\\ready.txt'
     with open(path, 'r') as f:
@@ -118,41 +103,42 @@ def open_ready_events():
 
     return temp_possible
       
-def game_simul():
-    possible_ev = open_ready_events()
+def game_simul(EVENTS, CURR_OP, NXT_EVENT, NAMES, possible_ev, policy_state, EventProcessor):
+    import random
+    write_events_to_files(EVENTS, CURR_OP, NXT_EVENT, NAMES)
+    possible_ev = open_ready_events(CURR_OP)
 
-    while True:
-        possible_ev = open_ready_events()
-        if possible_ev == []:
-            print('Bye Bye miss american pie')
-            quit()
+    possible_ev = open_ready_events(CURR_OP)
+    if possible_ev == []:
+        print('Bye Bye miss american pie')
+        quit()
 
 
-        coe_name, event_name = possible_ev.pop(random.randint(0, len(possible_ev)-1))
+    coe_name, event_name = possible_ev.pop(random.randint(0, len(possible_ev)-1))
 
-        engine = EventProcessor(NAMES[coe_name], policy_state)
+    engine = EventProcessor(NAMES[coe_name], policy_state)
 
-        event = engine.trigger(event_name)
+    event = engine.trigger(event_name)
 
-        print('\n' + event.description)
-        choices = event.available_choices(policy_state)
+    print('\n' + event.description)
+    choices = event.available_choices(policy_state)
 
-        for i, choice in enumerate(choices):
-            print(f"{i}: {choice.label}")
-        selection = int(input("Choose: \n"))
+    for i, choice in enumerate(choices):
+        print(f"{i}: {choice.label}")
+    selection = int(input("Choose: \n"))
 
-        next_event_id = engine.choose(choices[selection])
+    next_event_id = engine.choose(choices[selection])
 
-        if next_event_id == None:
-            EVENTS.remove(NAMES[coe_name])       
-            del CURR_OP[f'EVENTS_{coe_name}']
-            del NXT_EVENT[f'EVENTS_{coe_name}']
-            del NAMES[coe_name]
+    if next_event_id == None:
+        EVENTS.remove(NAMES[coe_name])       
+        del CURR_OP[f'EVENTS_{coe_name}']
+        del NXT_EVENT[f'EVENTS_{coe_name}']
+        del NAMES[coe_name]
 
-        else:        
-            CURR_OP[f'EVENTS_{coe_name}'] = NAMES[coe_name][next_event_id].order_of_ops
-            NXT_EVENT[f'EVENTS_{coe_name}'] = next_event_id
-        write_events_to_files(EVENTS)
+    else:        
+        CURR_OP[f'EVENTS_{coe_name}'] = NAMES[coe_name][next_event_id].order_of_ops
+        NXT_EVENT[f'EVENTS_{coe_name}'] = next_event_id
+    write_events_to_files(EVENTS, CURR_OP, NXT_EVENT, NAMES)
 
-write_events_to_files(EVENTS)
-game_simul()
+if __name__ == "__main__":
+    game_simul()

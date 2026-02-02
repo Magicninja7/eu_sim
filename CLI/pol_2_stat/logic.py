@@ -1,18 +1,4 @@
 import math
-import copy
-import sys
-from pathlib import Path
-
-ROOT = Path(__file__).resolve().parents[4]
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
-
-from stavanger_app.web.CLI.chain_of_events.infra import policies, stats
-
-
-_NORM_STAT = stats()
-policy = policies()
-stat = copy.deepcopy(_NORM_STAT)
 
 
 # i should be writing my TO instead of coding this mess
@@ -21,6 +7,7 @@ def _clamp(x: float, lo: float, hi: float) -> float:
     return max(lo, min(hi, x))
 
 def economy_policy2stats(policy_state, stat_state) -> dict:
+    import math
     gdp = float(stat_state.economy.get('gdp', 0) or 0)
     gdp = max(gdp, 1.0)
 
@@ -143,6 +130,7 @@ def economy_policy2stats(policy_state, stat_state) -> dict:
     return stat_state.economy
 
 def innerworkings_policy2stats(policy_state, stat_state) -> dict:
+    import math
     gdp = float(stat_state.economy.get("gdp", 0) or 0)
     gdp = max(gdp, 1.0)
 
@@ -265,6 +253,7 @@ def innerworkings_policy2stats(policy_state, stat_state) -> dict:
     return stat_state.inner_workings
 
 def humanrights_policy2stats(policy_state, stat_state) -> dict:
+    import math
     gdp = float(stat_state.economy.get("gdp", 0) or 0)
     gdp = max(gdp, 1.0)
 
@@ -372,6 +361,7 @@ def humanrights_policy2stats(policy_state, stat_state) -> dict:
     return stat_state.human_rights
 
 def security_policy2stats(policy_state, stat_state) -> dict:
+    import math
     gdp = float(stat_state.economy.get("gdp", 0) or 0)
     gdp = max(gdp, 1.0)
     gdp_scale = _clamp((math.log10(gdp) - 3.5) * 12.0, 0.0, 30.0)
@@ -463,6 +453,7 @@ def security_policy2stats(policy_state, stat_state) -> dict:
     return stat_state.security
 
 def democraphics_policy2stats(policy_state, stat_state):
+    import math
     gdp = float(stat_state.economy.get("gdp", 0) or 0)
     gdp = max(gdp, 1.0)
     gdp_scale = _clamp((math.log10(gdp) - 3.5) * 12.0, 0.0, 30.0)
@@ -533,6 +524,7 @@ def democraphics_policy2stats(policy_state, stat_state):
     return stat_state.demographics
 
 def people_policy2stats(policy_state, stat_state):
+    import math
     gdp = float(stat_state.economy.get("gdp", 0) or 0)
     gdp = max(gdp, 1.0)
     gdp_scale = _clamp((math.log10(gdp) - 3.5) * 12.0, 0.0, 30.0)
