@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Event Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&display=swap"
+  />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+</head>
+<body>
+  <div class="top-bar" role="status" aria-live="polite">
+    <div class="top-bar-item">
+      <span class="label">Day</span>
+      <span id="dayCounter" class="value">{{ curr_day }}</span>
+    </div>
+  </div>
+  <div id="map" class="map" aria-label="World map"></div>
+
+  <section id="eventWindow" class="event-window" aria-live="polite">
+    <header class="event-window-header">
+      <div class="title">Current Event</div>
+      <div class="country-info">
+        <span>Selected:</span>
+        <span id="countryName" class="value">None</span>
+      </div>
+    </header>
+
+    <div class="event-window-body">
+      <div id="eventDescription" class="event-description">Loading event...</div>
+      <div id="decisions" class="decisions" aria-label="Event choices"></div>
+    </div>
+  </section>
+
+  <div id="mapStatus" class="map-status" hidden></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</body>
+</html>

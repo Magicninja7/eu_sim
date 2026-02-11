@@ -106,7 +106,6 @@ def open_ready_events(CURR_OP):
 def game_simul(EVENTS, CURR_OP, NXT_EVENT, NAMES, possible_ev, policy_state, EventProcessor):
     import random
     write_events_to_files(EVENTS, CURR_OP, NXT_EVENT, NAMES)
-    possible_ev = open_ready_events(CURR_OP)
 
     possible_ev = open_ready_events(CURR_OP)
     if possible_ev == []:
@@ -140,5 +139,7 @@ def game_simul(EVENTS, CURR_OP, NXT_EVENT, NAMES, possible_ev, policy_state, Eve
         NXT_EVENT[f'EVENTS_{coe_name}'] = next_event_id
     write_events_to_files(EVENTS, CURR_OP, NXT_EVENT, NAMES)
 
+
+
 if __name__ == "__main__":
-    game_simul()
+    pass
