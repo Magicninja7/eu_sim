@@ -8,16 +8,29 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&display=swap"
-  />
+    href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&display=swap"/>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
 </head>
 <body>
   <div class="top-bar" role="status" aria-live="polite">
     <div class="top-bar-item">
-      <span class="label">Day</span>
-      <span id="dayCounter" class="value">{{ curr_day }}</span>
+      <span class="label">Dates</span>
+      <span id="dateCounter" class="value">{{ curr_day }}</span>
+      <span class="label">GDP</span>
+      <span id="gdpCounter" class="value">{{ gdp }}</span>
+      <div class="tax-dropdown">
+        <button class="tax-toggle" id="taxToggle">
+          <span class="label">Taxes</span>
+          <span id="taxCounterH" class="value">—</span>
+          <span class="arrow">▾</span>
+        </button>
+        <div class="tax-menu" id="taxMenu">
+          <div class="tax-row"><span>Low</span><span id="taxCounterL" class="value">—</span></div>
+          <div class="tax-row"><span>Medium</span><span id="taxCounterM" class="value">—</span></div>
+          <div class="tax-row"><span>High</span><span id="taxCounterHFull" class="value">—</span></div>
+        </div>
+      </div>
     </div>
   </div>
   <div id="map" class="map" aria-label="World map"></div>
@@ -43,3 +56,4 @@
   <script src="{{ url_for('static', filename='app.js') }}" defer></script>
 </body>
 </html>
+

@@ -68,6 +68,78 @@ html, body {
   font-weight: 700;
 }
 
+#dateCounter {
+  display: inline-block;
+  min-width: 100px;
+  text-align: left;
+}
+
+/* ── Tax dropdown ── */
+.tax-dropdown {
+  position: relative;
+  margin-left: 12px;
+}
+
+.tax-toggle {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  background: none;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 6px;
+  padding: 4px 10px;
+  color: #f0e6d1;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 15px;
+  transition: background 120ms;
+}
+
+.tax-toggle:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+.tax-toggle .arrow {
+  font-size: 11px;
+  opacity: 0.6;
+  transition: transform 200ms;
+}
+
+.tax-dropdown.open .tax-toggle .arrow {
+  transform: rotate(180deg);
+}
+
+.tax-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 160px;
+  background: #2d2d2d;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  padding: 8px 0;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+  z-index: 10;
+}
+
+.tax-dropdown.open .tax-menu {
+  display: block;
+}
+
+.tax-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 14px;
+  font-size: 14px;
+  color: #f0e6d1;
+}
+
+.tax-row .value {
+  font-weight: 700;
+  font-size: 15px;
+}
+
 .event-window {
   position: fixed;
   top: calc(8vh + var(--topbar-height));

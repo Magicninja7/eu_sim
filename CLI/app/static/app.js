@@ -26,13 +26,6 @@ function setMapStatus(message, isError = false) {
   el.style.color = isError ? '#ffb0b0' : '';
 }
 
-async function loadDayCounter() {
-  const data = await fetchJson('/api/day');
-  if (typeof data.day === 'number') {
-    setText('dayCounter', data.day);
-  }
-}
-
 async function loadEvent() {
   const data = await fetchJson('/api/event');
   const eventWindow = document.getElementById('eventWindow');
@@ -189,17 +182,54 @@ let lastKnownDay = null;
 async function pollDay() {
   const data = await fetchJson('/api/day');
   if (typeof data.day === 'number') {
-    setText('dayCounter', data.day);
-    if (lastKnownDay !== null && data.day !== lastKnownDay) {
+    setText('dateCounter', data.date);
+    const dayChanged = lastKnownDay !== null && data.day !== lastKnownDay;
+    lastKnownDay = data.day;
+    if (dayChanged) {
       await loadEvent();
     }
-    lastKnownDay = data.day;
   }
 }
 
+async function loadStatCounter() {
+  const data = await fetchJson('/api/stats');
+  if (typeof data.gdp === 'number') {
+    setText('gdpCounter', data.gdp);
+  }
+  if (typeof data.tax_l === 'number') {
+    setText('taxCounterL', data.tax_l);
+  }
+  if (typeof data.tax_m === 'number') {
+    setText('taxCounterM', data.tax_m);
+  }
+  if (typeof data.tax_h === 'number') {
+    setText('taxCounterH', data.tax_h);
+    setText('taxCounterHFull', data.tax_h);
+  }
+}
+
+// ── Tax dropdown toggle ──
+(function initTaxDropdown() {
+  const dropdown = document.querySelector('.tax-dropdown');
+  const toggle = document.getElementById('taxToggle');
+  if (!toggle || !dropdown) return;
+
+  toggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle('open');
+  });
+
+  document.addEventListener('click', () => {
+    dropdown.classList.remove('open');
+  });
+})();
+
 (async function main() {
   await pollDay();
+  await loadStatCounter();
   await loadEvent();
   initMap();
   setInterval(pollDay, 2000);
+  setInterval(loadStatCounter, 4000);
 })();
+ 

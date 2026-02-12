@@ -1,4 +1,5 @@
-from __future__ import annotations
+from __future__ import annotations, print_function
+# print('hello world', file=sys.stderr)
 
 import sys
 from pathlib import Path
@@ -16,6 +17,8 @@ from stavanger_app.web.CLI.pol_2_stat.increment import go_thru
 from stavanger_app.web.CLI.chain_of_events.coe_compiler import write_events_to_files, open_ready_events
 from stavanger_app.web.CLI.chain_of_events.polarisation import polarisat
 from stavanger_app.web.CLI.chain_of_events.terrorist_isis import terror_isis_1
+from flask import Flask, render_template, request, jsonify
+from typing import Any
 import random
 
 policy_state = policies()
@@ -23,9 +26,6 @@ stats_state = stats()
 
 possible_ev = []
 las_increment = last_incrimentation()
-
-curr_day = 0
-dis_say_event = False
 
 EVENTS_POLARISATION = polarisat(Event, Transition, stats_state)
 EVENTS_TERRORIST_ISIS_1 = terror_isis_1(Event, Transition, stats_state)
@@ -39,11 +39,42 @@ NAMES = {
     'TERRORIST_ISIS_1': EVENTS_TERRORIST_ISIS_1
 }
 
+curr_day = 1
+dis_say_event = False
+curr_month = 1
+curr_year = 2026
+months = {
+    1: 31,
+    2: 28,  # 29 days in leap year
+    3: 31,
+    4: 30,
+    5: 31,
+    6: 30,
+    7: 31,
+    8: 31,
+    9: 30,
+    10: 31,
+    11: 30,
+    12: 31
+}
+def check_leaps():
+    if curr_year % 4 and not curr_year % 100:
+        months[2] = 29
+    elif curr_year % 4 and curr_year % 100 and curr_year % 400:
+        months[2] = 29
+    else:
+        months[2] = 28
+def handle_days(day, month, year):
+    if month==12 and day == months[month]:
+        year+=1
+        month, day = 1, 1
+    elif day > months[month]:
+        month +=1
+        if month ==13:
+            month = 1
+        day = 1
+    return day, month, year
 
-
-from typing import Any
-
-from flask import Flask, render_template, request, jsonify
 
 
 def create_app() -> Flask:
@@ -85,7 +116,15 @@ def create_app() -> Flask:
 
     @app.get("/api/day")
     def api_day():
-        return jsonify({"day": curr_day})
+        date = f'{curr_day}/{curr_month}/{curr_year}'
+        return jsonify({"date": date, "day": curr_day})
+    
+    @app.get("/api/stats")
+    def api_stats():
+        global stats_state
+        gdp = stats_state.economy['gdp']
+        tax_l, tax_m, tax_h = policy_state.taxation['low'], policy_state.taxation['medium'], policy_state.taxation['high']
+        return jsonify({"gdp": gdp, "tax_l": tax_l, "tax_m": tax_m, "tax_h": tax_h})
 
     @app.get("/api/event")
     def api_event():
@@ -100,6 +139,7 @@ def create_app() -> Flask:
             message = state.get("last_message") or "No more events available."
             return jsonify({"done": True, "message": message})
         dis_say_event = True
+    
 
         event = current["event"]
         decisions = [
@@ -166,11 +206,13 @@ def create_app() -> Flask:
     return app
 
 def day_update():
-    global curr_day, dis_say_event
+    global curr_day, curr_month, curr_year, dis_say_event
     while True:
         curr_day += 1
+        curr_day, curr_month, curr_year = handle_days(curr_day, curr_month, curr_year)
         dis_say_event = False
         sleep(4)
+        
 
 if __name__ == "__main__":
     app = create_app()
