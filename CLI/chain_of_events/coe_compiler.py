@@ -8,7 +8,8 @@ def check_prerequisites(NAMES):
             x = NAMES[name_dict][name_event].prerequisites
             tmp_rdy.append(param)
             for a in x:
-                if a == False:
+                result = a() if callable(a) else a
+                if result == False:
                     tmp_rdy.remove(param)
                     tmp_nt_rdy.append(param)
                     break
@@ -61,9 +62,10 @@ def write_events_to_files(EVENTS, CURR_OP, NXT_EVENT, NAMES):
     ids = []
     not_ids = []
     for event in EVENTS:
-        key = next(k for k, v in NAMES.items() if v is event)
+        key = next(k for k, v in NAMES.items() if v is event) # k is the event name, ex POLARISATION
+        #find what order of op
         curr_opp = CURR_OP[f'EVENTS_{key}']
-
+        
         if NXT_EVENT[f'EVENTS_{key}'] == None:
             temp_ids = [e.id for e in event.values() if getattr(e, "order_of_ops", None) == curr_opp]
         else:
@@ -75,7 +77,8 @@ def write_events_to_files(EVENTS, CURR_OP, NXT_EVENT, NAMES):
             #check if prerequisites met
             x = event[idd].prerequisites
             for a in x:
-                if a == False:
+                result = a() if callable(a) else a
+                if result == False:
                     temp_ids.remove(idd)
                     temp_not_ids.append(idd)
                     break
@@ -143,3 +146,5 @@ def game_simul(EVENTS, CURR_OP, NXT_EVENT, NAMES, possible_ev, policy_state, Eve
 
 if __name__ == "__main__":
     pass
+
+# implement chain-switching functionality

@@ -72,7 +72,7 @@ def polarisat(Event, Transition, stats):
     )  
     EVENTS_POLARISATION["division"] = Event(
         id='division',
-        prerequisites=[stats.human_rights['freedom_of_assembly'] > 90, True],
+        prerequisites=[lambda: stats.human_rights['freedom_of_assembly'] > 70],
         order_of_ops=2,
         title='The opposition rallies people against you!',
         description="The people came to the streets to protest your recent actions!",
@@ -87,7 +87,7 @@ def polarisat(Event, Transition, stats):
             Transition(
                 label="Hold the ground, no concessions",
                 condition=lambda state: True,
-                target_event_id="division"
+                target_event_id=None
             )
         ]
     )  

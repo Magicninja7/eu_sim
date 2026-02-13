@@ -1,5 +1,5 @@
 
-def terror_isis_1(Event, Transition, stats):
+def terrorist_isis_1(Event, Transition, stats):
     EVENTS_TERRORIST_ISIS_1 = {}
     EVENTS_TERRORIST_ISIS_1['name'] = 'TERRORIST_ISIS_1'
     EVENTS_TERRORIST_ISIS_1['internet_campaign'] = Event(
@@ -19,7 +19,7 @@ def terror_isis_1(Event, Transition, stats):
             Transition(
                 label="Take all the posts down, and threaten to take down websites that don't!",
                 condition=lambda state: stats.security['cybersec'] > 60,
-                target_event_id=None
+                target_event_id='EVENTS_TERRORIST_ATT_ISIS_1'
             )
         ]
     )

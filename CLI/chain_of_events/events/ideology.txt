@@ -1,0 +1,67 @@
+0.0 (big_election_win_fraud)
+You lead the ____, a ruling party that just won a shocking landslide victory, completely in contrast to the exit polls.The opposition ___, claims widespread electoral fraud. International observers are divided, the country is polarised, and TV networks are running 24/h coverage
+-> create independent audit -> 1.1
+-> dismiss claimes as lies -> 1.2
+-> Order removal of "harmful disinformation" -> 1.3
+
+1.
+1.1 (audit_big_election_win_fraud)
+You annoucne and audit, the public demands transparency. Who will conduct it?
+-> A parliamentary committee -> 2.10
+-> An executive review comission -> 2.11
+-> A judicial oversight panel -> 2.12
+
+1.2 (claims_lies_big_election_win_fraud)
+You call the allegations a "desperate losing hail mary". The opposition escalates rhetoric, news network begin investigative coverage. Protests start.
+-> increase anti-opposition rhetoric -> 2.20
+-> seek a back-channel compromise -> 2.21
+-> lower tone and call for unity during these instable times -> 1.1
+
+1.3 (removal_disinformation_big_election_win_fraud)
+Content alleging fraud is removed from major platforms under "national stability" provisions. Soon the ECHR opens a preliminary hearing review...
+-> Reverse the censorship -> 2.30
+-> Maintain censorship, increase pro-stability rhetoric -> 2.31
+
+
+2. 
+2.10 (parliamentary_committee_big_election_win_fraud)
+Houston there is a problem, you control the parliment. The opposition and press realise that; court complaints were filed and protests mobilised.
+-> tranfer audit to judiciary -> 2.12
+-> defend parliamentary neutrality -> n/d
+-> fast-track investigation and results before situation escalates -> n/d
+
+2.11 (exe_review_big_election_win_fraud)
+Even you allies are uncomfortable, you are summoned infront of the ECHR to give explenations. Choose your defence strategy.
+-> reassign audit to courts -> 2.12
+-> stand firm with it being "Fully constitutional and within spirit of the law" -> n/d
+-> announce compromise - parliamentary comission with foreign-led obserbers -> mb modified 2.10?
+
+2.12 (courts_audit_big_election_win_fraud)
+Courts begin review, situation on the streets begin to calm. TVs update situation hourly, investigative programs release. Emotions and distrust remain high
+-> respect full independence -> 1 event about calming down -> resolution
+-> Quietly control the judges 
+-> fuel propaganda during waiting period -> 2.20
+
+2.20 (propaganda_esc_big_election_win_fraud)
+Trust in the opposition trops drastically among your supporters. However independent press accuses you of disinformational campaigns. Foreign media begin reporting concerns.
+-> Investigate the media! look for "bias" and foreign agent involvment -> increase, hr step in
+-> Open a debate on public television -> debate event
+-> De-escalate narrative
+
+2.21 (negotiation_attmpt_big_election_win_fraud)
+You open talks with the opposition, what is your goal in this?
+-> joint public statement recognising original results -> 99.9% no
+-> Power-sharing concessions for backing down on election fraud allegations -> mb, lose control
+-> excersice delaying tactics, hoping for public losing their interest -> new event chain
+
+2.30 (censorship_rev_big_election_win_fraud)
+You frop the restrictions, ECHR shelves the case. However, you lose credibility in eyes of your most radical supporters, and opposition insists on fraud.
+-> see whats later
+
+2.31 (censorship_mant_big_election_win_fraud)
+The ECHR case continues, maintainment of censorship seen negatively. Protests continue and trust in you plummets
+2.310 (echr_ruling_big_election_win_fraud)
+The ECHR has ruled against you, forcing to conduct a judicial audit and temporarily removing you from power, until the audit is over. Cheering erupts from the opposition, as you allies back away from you.
+-> comply with ruling
+-> coup d'etat plot?
+
