@@ -114,7 +114,11 @@ def handle_days(day, month, year):
 
 
 def create_app() -> Flask:
-    app = Flask(__name__)
+    # Specify template and static folders (one level up from app.py)
+    template_dir = os.path.join(os.path.dirname(__file__), '..', 'templates')
+    static_dir = os.path.join(os.path.dirname(__file__), '..', 'static')
+    
+    app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 
     state: dict[str, Any] = {
         "current": None,
