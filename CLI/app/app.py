@@ -9,21 +9,22 @@ from collections import deque
 from threading import Lock, Thread
 from time import sleep
 
-ROOT = Path(__file__).resolve().parents[4]
+# Add parent directory to path for relative imports
+ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from stavanger_app.web.CLI.chain_of_events.coe_logic import Event, Transition, EventProcessor
-from stavanger_app.web.CLI.chain_of_events.infra import stats, policies, types_of_stats, last_incrimentation
-from stavanger_app.web.CLI.pol_2_stat.logic import do_all
-from stavanger_app.web.CLI.pol_2_stat.increment import go_thru
-from stavanger_app.web.CLI.chain_of_events.coe_compiler import write_events_to_files, open_ready_events
-from stavanger_app.web.CLI.chain_of_events.events.polarisation import polarisat
-from stavanger_app.web.CLI.chain_of_events.events.terrorist_isis import terrorist_isis_1
-from stavanger_app.web.CLI.chain_of_events.events.terrorist_att_isis_1 import terrorist_att_isis_1
-from stavanger_app.web.CLI.chain_of_events.events.close_elections import cls_elections
-from stavanger_app.web.CLI.chain_of_events.events.pension_shortfall import pension_shortfall
-from stavanger_app.web.CLI.generaliser.generaliser import generalise
+from chain_of_events.coe_logic import Event, Transition, EventProcessor
+from chain_of_events.infra import stats, policies, types_of_stats, last_incrimentation
+from pol_2_stat.logic import do_all
+from pol_2_stat.increment import go_thru
+from chain_of_events.coe_compiler import write_events_to_files, open_ready_events
+from chain_of_events.events.polarisation import polarisat
+from chain_of_events.events.terrorist_isis import terrorist_isis_1
+from chain_of_events.events.terrorist_att_isis_1 import terrorist_att_isis_1
+from chain_of_events.events.close_elections import cls_elections
+from chain_of_events.events.pension_shortfall import pension_shortfall
+from generaliser.generaliser import generalise
 from flask import Flask, render_template, request, jsonify
 from typing import Any
 import random

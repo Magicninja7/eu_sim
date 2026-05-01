@@ -1,0 +1,12 @@
+# Vercel
+.vercel/
+*.pyc
+__pycache__/
+*.egg-info/
+dist/
+build/
+.env
+.env.local
+.DS_Store
+.venv/
+venv/
