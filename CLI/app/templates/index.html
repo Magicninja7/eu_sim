@@ -8,52 +8,81 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&display=swap"/>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Space+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"/>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
 </head>
 <body>
-  <div class="top-bar" role="status" aria-live="polite">
-    <div class="top-bar-item">
-      <span class="label">Dates</span>
-      <span id="dateCounter" class="value">{{ curr_day }}</span>
-      <span class="label">GDP</span>
-      <span id="gdpCounter" class="value">{{ gdp }}</span>
-      <div class="tax-dropdown">
-        <button class="tax-toggle" id="taxToggle">
-          <span class="label">Taxes</span>
-          <span id="taxCounterH" class="value">—</span>
-          <span class="arrow">▾</span>
-        </button>
-        <div class="tax-menu" id="taxMenu">
-          <div class="tax-row"><span>Low</span><span id="taxCounterL" class="value">—</span></div>
-          <div class="tax-row"><span>Medium</span><span id="taxCounterM" class="value">—</span></div>
-          <div class="tax-row"><span>High</span><span id="taxCounterHFull" class="value">—</span></div>
-        </div>
-      </div>
+
+
+
+
+  <!--  map stuff, temp unused
+  <div id="map" class="map" aria-label="World map"></div>
+  <div id="mapStatus" class="map-status" hidden></div>
+  -->
+
+  <div id="statsBar" class="stats-bar" aria-label="National statistics">
+    <div class="stat-item" id="stat-economics">
+      <span class="stat-name">Economics</span>
+      <span class="stat-value" id="val-economics">—</span>
+    </div>
+    <div class="stat-item" id="stat-inner_workings">
+      <span class="stat-name">Inner Workings</span>
+      <span class="stat-value" id="val-inner_workings">—</span>
+    </div>
+    <div class="stat-item" id="stat-diplomacy">
+      <span class="stat-name">Diplomacy</span>
+      <span class="stat-value" id="val-diplomacy">—</span>
+    </div>
+    <div class="stat-item" id="stat-security">
+      <span class="stat-name">Security</span>
+      <span class="stat-value" id="val-security">—</span>
+    </div>
+    <div class="stat-item" id="stat-demographics">
+      <span class="stat-name">Demographics</span>
+      <span class="stat-value" id="val-demographics">—</span>
+    </div>
+    <div class="stat-item" id="stat-people">
+      <span class="stat-name">People</span>
+      <span class="stat-value" id="val-people">—</span>
+    </div>
+    <div class="stat-item" id="stat-human_rights">
+      <span class="stat-name">Human Rights</span>
+      <span class="stat-value" id="val-human_rights">—</span>
     </div>
   </div>
-  <div id="map" class="map" aria-label="World map"></div>
+
+  <div id="gameOverlay" class="game-over-overlay" hidden>
+    <div class="game-over-box">
+      <div class="game-over-title">GAME OVER</div>
+      <div class="game-over-reason" id="gameOverReason">A critical stat collapsed to zero.</div>
+    </div>
+  </div>
 
   <section id="eventWindow" class="event-window" aria-live="polite">
-    <header class="event-window-header">
-      <div class="title">Current Event</div>
-      <div class="country-info">
-        <span>Selected:</span>
-        <span id="countryName" class="value">None</span>
-      </div>
-    </header>
-
-    <div class="event-window-body">
-      <div id="eventDescription" class="event-description">Loading event...</div>
-      <div id="decisions" class="decisions" aria-label="Event choices"></div>
+    <div id="decisions" class="decision-grid" aria-label="Event choices">
+      <button type="button" class="decision-zone" id="zone-tl" data-slot="0" aria-label="Top left decision">
+        <!-- <span class="slot-label">Top Left</span> -->
+        <span class="decision-label">Waiting for decision...</span>
+      </button>
+      <button type="button" class="decision-zone" id="zone-tr" data-slot="1" aria-label="Top right decision">
+        <span class="decision-label">Waiting for decision...</span>
+      </button>
+      <button type="button" class="decision-zone" id="zone-bl" data-slot="2" aria-label="Bottom left decision">
+        <span class="decision-label">Waiting for decision...</span>
+      </button>
+      <button type="button" class="decision-zone" id="zone-br" data-slot="3" aria-label="Bottom right decision">
+        <span class="decision-label">Waiting for decision...</span>
+      </button>
     </div>
+
+    <article id="eventCard" class="event-card" aria-label="Draggable event description">
+      <div id="eventDescription" class="event-description">Loading event...</div>
+      <div class="drag-hint">Drag this description card into a decision quadrant to choose.</div>
+    </article>
   </section>
 
-  <div id="mapStatus" class="map-status" hidden></div>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="{{ url_for('static', filename='app.js') }}" defer></script>
 </body>
 </html>
-

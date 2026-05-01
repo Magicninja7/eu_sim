@@ -1,4 +1,5 @@
 import math
+import copy
 
 
 # i should be writing my TO instead of coding this mess
@@ -24,51 +25,51 @@ def economy_policy2stats(policy_state, stat_state) -> dict:
     progressivity = float(tax['high']) - float(tax['low'])
     tax_burden = (0.2 * tax['low'] + 0.3 * tax['medium'] + 0.5 * tax['high']) / 100.0
 
-    inflation = 2.0
-    inflation += max(deficit_share_gdp, 0.0) * 20.0
-    inflation -= max(-deficit_share_gdp, 0.0) * 8.0
-    inflation += float(econ['vat']) * 0.02
-    inflation += (50.0 - float(econ['trade'])) * 0.03
-    inflation += (100.0 - float(env['energy_mix'])) * 0.015
-    inflation += (float(econ['labour_regulation']) - 50.0) * 0.01
+    inflation = 1.0
+    inflation += max(deficit_share_gdp, 0.0) * 25.0
+    inflation -= max(-deficit_share_gdp, 0.0) * 6.0
+    inflation += float(econ['vat']) * 0.03
+    inflation += (50.0 - float(econ['trade'])) * 0.05
+    inflation += (100.0 - float(env['energy_mix'])) * 0.025
+    inflation += (float(econ['labour_regulation']) - 50.0) * 0.02
     inflation = _clamp(inflation, 0.0, 15.0)
 
     wage_factor = float(econ['minimum_wage']) / 2000.0
     unemployment = (
-        4.0
-        + (float(econ['labour_regulation']) - 50.0) * 0.06
-        + (wage_factor - 1.0) * 2.5
-        - (float(econ['public_spending']) - 50.0) * 0.04
-        - (float(econ['trade']) - 50.0) * 0.025
-        - (float(soc['education_policy']) - 50.0) * 0.03
-        + (tax_burden - 0.35) * 6.0
+        3.5
+        + (float(econ['labour_regulation']) - 50.0) * 0.07
+        + (wage_factor - 1.0) * 3.0
+        - (float(econ['public_spending']) - 50.0) * 0.05
+        - (float(econ['trade']) - 50.0) * 0.03
+        - (float(soc['education_policy']) - 50.0) * 0.04
+        + (tax_burden - 0.35) * 7.0
     )
     unemployment = _clamp(unemployment, 0.0, 25.0)
 
     debt_to_gdp = (
-        25.0
-        + max(deficit_share_gdp, 0.0) * 260.0
-        - max(-deficit_share_gdp, 0.0) * 120.0
-        + (float(econ['public_spending']) - 50.0) * 0.30
-        + (float(econ['state_ownership']) - 50.0) * 0.20
-        - (float(econ['trade']) - 50.0) * 0.15
-        - progressivity * 0.08
-        - (tax_burden - 0.35) * 40.0
+        15.0
+        + max(deficit_share_gdp, 0.0) * 280.0
+        - max(-deficit_share_gdp, 0.0) * 100.0
+        + (float(econ['public_spending']) - 50.0) * 0.40
+        + (float(econ['state_ownership']) - 50.0) * 0.25
+        - (float(econ['trade']) - 50.0) * 0.20
+        - progressivity * 0.10
+        - (tax_burden - 0.35) * 50.0
     )
     debt_to_gdp = _clamp(debt_to_gdp, 0.0, 100.0)
 
     industry_gap = abs(float(econ["industry"]) - 50.0)
     ownership_gap = abs(float(econ["state_ownership"]) - 50.0)
     innovation = (
-        45.0
-        + (float(soc["education_policy"]) - 50.0) * 0.30
-        + (float(econ["trade"]) - 50.0) * 0.20
-        + (float(env["carbon_zero"]) - 50.0) * 0.05
-        + (float(econ["public_spending"]) - 50.0) * 0.05
-        - industry_gap * 0.10
-        - ownership_gap * 0.08
-        - (float(econ["labour_regulation"]) - 50.0) * 0.07
-        - (float(pol["censorship"]) - 50.0) * 0.12
+        30.0
+        + (float(soc["education_policy"]) - 50.0) * 0.35
+        + (float(econ["trade"]) - 50.0) * 0.25
+        + (float(env["carbon_zero"]) - 50.0) * 0.08
+        + (float(econ["public_spending"]) - 50.0) * 0.08
+        - industry_gap * 0.15
+        - ownership_gap * 0.12
+        - (float(econ["labour_regulation"]) - 50.0) * 0.12
+        - (float(pol["censorship"]) - 50.0) * 0.18
     )
     innovation = _clamp(innovation, 0.0, 100.0)
 
@@ -86,15 +87,15 @@ def economy_policy2stats(policy_state, stat_state) -> dict:
     big_business = int(round(_clamp(gdp_scale * (0.5 + pro_business / 100.0), 0.0, 100.0)))
 
     income_inequality = (
-        45.0
-        - progressivity * 0.28
-        - (float(soc["social_policy"]) - 50.0) * 0.20
-        - (float(soc["labour_policy"]) - 50.0) * 0.15
-        - (float(soc["education_policy"]) - 50.0) * 0.08
-        - (wage_factor - 1.0) * 3.0
-        + (float(econ["trade"]) - 50.0) * 0.06
-        - (float(econ["state_ownership"]) - 50.0) * 0.10
-        + unemployment * 0.35
+        35.0
+        - progressivity * 0.35
+        - (float(soc["social_policy"]) - 50.0) * 0.28
+        - (float(soc["labour_policy"]) - 50.0) * 0.22
+        - (float(soc["education_policy"]) - 50.0) * 0.12
+        - (wage_factor - 1.0) * 4.5
+        + (float(econ["trade"]) - 50.0) * 0.08
+        - (float(econ["state_ownership"]) - 50.0) * 0.15
+        + unemployment * 0.45
     )
     income_inequality = _clamp(income_inequality, 0.0, 100.0)
 
@@ -145,48 +146,48 @@ def innerworkings_policy2stats(policy_state, stat_state) -> dict:
     gdp_scale = _clamp((math.log10(gdp) - 3.5) * 12.0, 0.0, 30.0)
 
     legitimacy = (
-        45.0
-        + (float(pol["election_fairness"]) - 50.0) * 0.45
-        + (float(pol["judicial_independence"]) - 50.0) * 0.35
-        + (float(soc["education_policy"]) - 50.0) * 0.12
-        + (float(soc["healthcare_policy"]) - 50.0) * 0.10
-        + (float(soc["social_policy"]) - 50.0) * 0.08
-        - (float(pol["authoritarianism"]) - 50.0) * 0.30
-        - (float(pol["censorship"]) - 50.0) * 0.25
-        - (float(pol["surveillance"]) - 50.0) * 0.18
-        - (float(pol["power_struggle"]) - 50.0) * 0.25
-        - (float(pol["ngo_regulation"]) - 50.0) * 0.12
-        - abs(float(police["police_style"]) - 55.0) * 0.06
+        38.0
+        + (float(pol["election_fairness"]) - 50.0) * 0.48
+        + (float(pol["judicial_independence"]) - 50.0) * 0.38
+        + (float(soc["education_policy"]) - 50.0) * 0.13
+        + (float(soc["healthcare_policy"]) - 50.0) * 0.11
+        + (float(soc["social_policy"]) - 50.0) * 0.09
+        - (float(pol["authoritarianism"]) - 50.0) * 0.36
+        - (float(pol["censorship"]) - 50.0) * 0.30
+        - (float(pol["surveillance"]) - 50.0) * 0.22
+        - (float(pol["power_struggle"]) - 50.0) * 0.30
+        - (float(pol["ngo_regulation"]) - 50.0) * 0.13
+        - abs(float(police["police_style"]) - 55.0) * 0.07
     )
     legitimacy = _clamp(legitimacy, 0.0, 100.0)
 
     state_capacity = (
-        50.0
-        + gdp_scale * 1.1
-        + (float(econ["public_spending"]) - 50.0) * 0.18
-        + (float(police["police_funding"]) - 50.0) * 0.18
-        + (float(military["military_budget"]) - 3.0) * 3.5
-        + (float(soc["education_policy"]) - 50.0) * 0.14
-        + (float(soc["healthcare_policy"]) - 50.0) * 0.08
-        - (float(econ["labour_regulation"]) - 50.0) * 0.08
-        - (float(env["env_regulation"]) - 50.0) * 0.05
-        - abs(float(pol["power_struggle"]) - 50.0) * 0.12
+        45.0
+        + gdp_scale * 1.05
+        + (float(econ["public_spending"]) - 50.0) * 0.20
+        + (float(police["police_funding"]) - 50.0) * 0.20
+        + (float(military["military_budget"]) - 3.0) * 3.7
+        + (float(soc["education_policy"]) - 50.0) * 0.16
+        + (float(soc["healthcare_policy"]) - 50.0) * 0.09
+        - (float(econ["labour_regulation"]) - 50.0) * 0.10
+        - (float(env["env_regulation"]) - 50.0) * 0.06
+        - abs(float(pol["power_struggle"]) - 50.0) * 0.15
     )
     state_capacity = _clamp(state_capacity, 0.0, 100.0)
 
     tax_burden = (0.2 * tax["low"] + 0.3 * tax["medium"] + 0.5 * tax["high"]) / 100.0
     corruption = (
-        58.0
-        - (float(pol["judicial_independence"]) - 50.0) * 0.40
-        - (float(pol["election_fairness"]) - 50.0) * 0.28
-        - (float(pol["censorship"]) - 50.0) * 0.12
-        - (float(pol["surveillance"]) - 50.0) * 0.14
-        - (float(pol["ngo_regulation"]) - 50.0) * 0.08
-        + (float(pol["power_struggle"]) - 50.0) * 0.24
-        + (float(econ["state_ownership"]) - 50.0) * 0.16
-        + (tax_burden - 0.35) * 32.0
-        - gdp_scale * 0.6
-        - (float(soc["education_policy"]) - 50.0) * 0.06
+        54.0
+        - (float(pol["judicial_independence"]) - 50.0) * 0.45
+        - (float(pol["election_fairness"]) - 50.0) * 0.32
+        - (float(pol["censorship"]) - 50.0) * 0.14
+        - (float(pol["surveillance"]) - 50.0) * 0.16
+        - (float(pol["ngo_regulation"]) - 50.0) * 0.10
+        + (float(pol["power_struggle"]) - 50.0) * 0.28
+        + (float(econ["state_ownership"]) - 50.0) * 0.19
+        + (tax_burden - 0.35) * 36.0
+        - gdp_scale * 0.70
+        - (float(soc["education_policy"]) - 50.0) * 0.07
     )
     corruption = _clamp(corruption, 0.0, 100.0)
 
@@ -202,40 +203,40 @@ def innerworkings_policy2stats(policy_state, stat_state) -> dict:
     military_pos = _clamp(military_pos, 0.0, 100.0)
 
     police_respect = (
-        60.0
-        - abs(float(police["police_style"]) - 55.0) * 0.40
-        - (float(police["prison_policy"]) - 50.0) * 0.22
-        - (float(police["death_pen"]) - 50.0) * 0.18
-        - abs(float(police["police_funding"]) - 60.0) * 0.22
-        + (float(pol["judicial_independence"]) - 50.0) * 0.12
-        + (float(pol["election_fairness"]) - 50.0) * 0.06
-        - (float(pol["surveillance"]) - 50.0) * 0.06
+        55.0
+        - abs(float(police["police_style"]) - 55.0) * 0.45
+        - (float(police["prison_policy"]) - 50.0) * 0.25
+        - (float(police["death_pen"]) - 50.0) * 0.22
+        - abs(float(police["police_funding"]) - 60.0) * 0.25
+        + (float(pol["judicial_independence"]) - 50.0) * 0.13
+        + (float(pol["election_fairness"]) - 50.0) * 0.07
+        - (float(pol["surveillance"]) - 50.0) * 0.10
     )
     police_respect = _clamp(police_respect, 0.0, 100.0)
 
     rule_of_law = (
-        55.0
-        + (float(pol["judicial_independence"]) - 50.0) * 0.45
-        + (float(pol["election_fairness"]) - 50.0) * 0.22
-        - abs(float(police["police_funding"]) - 60.0) * 0.25
-        - (float(pol["authoritarianism"]) - 50.0) * 0.22
-        - (float(pol["censorship"]) - 50.0) * 0.16
-        - (float(pol["surveillance"]) - 50.0) * 0.12
-        - (float(pol["power_struggle"]) - 50.0) * 0.15
-        - abs(float(police["police_style"]) - 55.0) * 0.10
-        - (float(police["death_pen"]) - 50.0) * 0.06
+        45.0
+        + (float(pol["judicial_independence"]) - 50.0) * 0.52
+        + (float(pol["election_fairness"]) - 50.0) * 0.28
+        - abs(float(police["police_funding"]) - 60.0) * 0.32
+        - (float(pol["authoritarianism"]) - 50.0) * 0.32
+        - (float(pol["censorship"]) - 50.0) * 0.22
+        - (float(pol["surveillance"]) - 50.0) * 0.18
+        - (float(pol["power_struggle"]) - 50.0) * 0.20
+        - abs(float(police["police_style"]) - 55.0) * 0.15
+        - (float(police["death_pen"]) - 50.0) * 0.12
     )
     rule_of_law = _clamp(rule_of_law, 0.0, 100.0)
 
     bureaucracy = (
-        40.0
-        + (float(econ["public_spending"]) - 50.0) * 0.26
-        + (float(econ["state_ownership"]) - 50.0) * 0.22
-        + (float(econ["labour_regulation"]) - 50.0) * 0.20
-        + (float(env["env_regulation"]) - 50.0) * 0.12
-        + (tax_burden - 0.35) * 36.0
-        - gdp_scale * 0.55
-        - (float(pol["power_struggle"]) - 50.0) * 0.12
+        30.0
+        + (float(econ["public_spending"]) - 50.0) * 0.32
+        + (float(econ["state_ownership"]) - 50.0) * 0.28
+        + (float(econ["labour_regulation"]) - 50.0) * 0.26
+        + (float(env["env_regulation"]) - 50.0) * 0.16
+        + (tax_burden - 0.35) * 45.0
+        - gdp_scale * 0.70
+        - (float(pol["power_struggle"]) - 50.0) * 0.18
     )
     bureaucracy = _clamp(bureaucracy, 0.0, 100.0)
 
@@ -265,33 +266,33 @@ def humanrights_policy2stats(policy_state, stat_state) -> dict:
     gdp_scale = _clamp((math.log10(gdp) - 3.5) * 12.0, 0.0, 30.0)
 
     freedom_of_speech = (
-        45.0
-        + (100.0 - float(pol["censorship"])) * 0.35
-        + (100.0 - float(pol["authoritarianism"])) * 0.20
-        + (100.0 - float(pol["internet_regulation"])) * 0.20
-        + (100.0 - float(pol["surveillance"])) * 0.10
-        + (50.0 - float(pol["media_ownership"])) * 0.10
+        35.0
+        + (100.0 - float(pol["censorship"])) * 0.40
+        + (100.0 - float(pol["authoritarianism"])) * 0.25
+        + (100.0 - float(pol["internet_regulation"])) * 0.25
+        + (100.0 - float(pol["surveillance"])) * 0.15
+        + (50.0 - float(pol["media_ownership"])) * 0.12
     )
     freedom_of_speech = _clamp(freedom_of_speech, 0.0, 100.0)
 
     freedom_of_press = (
-        40.0
-        + (100.0 - float(pol["censorship"])) * 0.30
-        + (100.0 - float(pol["authoritarianism"])) * 0.18
-        + (100.0 - float(pol["internet_regulation"])) * 0.14
-        + (100.0 - float(pol["surveillance"])) * 0.10
-        + (float(pol["judicial_independence"]) - 50.0) * 0.12
-        + (50.0 - float(pol["media_ownership"])) * 0.16
+        30.0
+        + (100.0 - float(pol["censorship"])) * 0.35
+        + (100.0 - float(pol["authoritarianism"])) * 0.22
+        + (100.0 - float(pol["internet_regulation"])) * 0.18
+        + (100.0 - float(pol["surveillance"])) * 0.12
+        + (float(pol["judicial_independence"]) - 50.0) * 0.15
+        + (50.0 - float(pol["media_ownership"])) * 0.20
     )
     freedom_of_press = _clamp(freedom_of_press, 0.0, 100.0)
 
     freedom_of_assembly = (
-        40.0
-        + (100.0 - float(pol["authoritarianism"])) * 0.24
-        + (100.0 - float(pol["surveillance"])) * 0.16
-        + (100.0 - float(pol["ngo_regulation"])) * 0.20
-        + (50.0 - float(police["police_style"])) * 0.20
-        + (float(pol["election_fairness"]) - 50.0) * 0.12
+        30.0
+        + (100.0 - float(pol["authoritarianism"])) * 0.30
+        + (100.0 - float(pol["surveillance"])) * 0.22
+        + (100.0 - float(pol["ngo_regulation"])) * 0.25
+        + (50.0 - float(police["police_style"])) * 0.25
+        + (float(pol["election_fairness"]) - 50.0) * 0.15
     )
     freedom_of_assembly = _clamp(freedom_of_assembly, 0.0, 100.0)
 
@@ -337,12 +338,12 @@ def humanrights_policy2stats(policy_state, stat_state) -> dict:
     due_process = _clamp(due_process, 0.0, 100.0)
 
     freedom_to_privacy = (
-        35.0
-        + (100.0 - float(pol["surveillance"])) * 0.40
-        + (100.0 - float(pol["authoritarianism"])) * 0.16
-        + (100.0 - float(pol["internet_regulation"])) * 0.20
-        + (50.0 - float(pol["censorship"])) * 0.08
-        + (50.0 - float(police["police_style"])) * 0.12
+        25.0
+        + (100.0 - float(pol["surveillance"])) * 0.50
+        + (100.0 - float(pol["authoritarianism"])) * 0.20
+        + (100.0 - float(pol["internet_regulation"])) * 0.25
+        + (50.0 - float(pol["censorship"])) * 0.10
+        + (50.0 - float(police["police_style"])) * 0.15
     )
     freedom_to_privacy = _clamp(freedom_to_privacy, 0.0, 100.0)
 
@@ -374,28 +375,28 @@ def security_policy2stats(policy_state, stat_state) -> dict:
     cul = policy_state.culture
 
     crime_rate = (
-        20.0
-        + (float(pol['surveillance']) - 50.0) * 0.30
-        + (100.0 - float(police['police_funding']) - 50.0) * 0.25
-        + (float(soc['social_policy']) - 60.0) * 0.20
-        + (float(soc['housing_policy']) - 60.0) * 0.15
-        - (100.0 - police['police_style'] - 50.0) * 0.15
-        - (100.0 - police['prison_policy'] - 50.0) * 0.15
-        + gdp_scale * 0.08
+        15.0
+        + (float(pol['surveillance']) - 50.0) * 0.35
+        + (100.0 - float(police['police_funding']) - 50.0) * 0.32
+        + (float(soc['social_policy']) - 60.0) * 0.28
+        + (float(soc['housing_policy']) - 60.0) * 0.22
+        - (100.0 - police['police_style'] - 50.0) * 0.18
+        - (100.0 - police['prison_policy'] - 50.0) * 0.18
+        + gdp_scale * 0.12
 
     )
     crime_rate = _clamp(crime_rate, 0.0, 100.0)
 
     organised_crime = (
-        25.0
-        - float(pol['surveillance']) * 0.20
-        + (100.0 - float(police['police_funding']) - 50.0) * 0.35
-        + (float(soc['social_policy']) - 60.0) * 0.20
-        + (float(soc['housing_policy']) - 60.0) * 0.25
-        + (100.0 - police['police_style'] - 50.0) * 0.15
-        + (100.0 - police['prison_policy'] - 50.0) * 0.15
-        + gdp_scale * 0.50
-        + (100.0 - float(eco['industry']) - 50.0) * 0.20
+        18.0
+        - float(pol['surveillance']) * 0.25
+        + (100.0 - float(police['police_funding']) - 50.0) * 0.45
+        + (float(soc['social_policy']) - 60.0) * 0.28
+        + (float(soc['housing_policy']) - 60.0) * 0.32
+        + (100.0 - police['police_style'] - 50.0) * 0.20
+        + (100.0 - police['prison_policy'] - 50.0) * 0.20
+        + gdp_scale * 0.60
+        + (100.0 - float(eco['industry']) - 50.0) * 0.28
     )
     organised_crime = _clamp(organised_crime, 1.0, 100.0)
  
@@ -463,12 +464,12 @@ def democraphics_policy2stats(policy_state, stat_state):
     soc = policy_state.social
 
     age_structure = (
-        30.0
-        - (float(soc['labour_policy']) - 50.0) * 0.20
-        - (float(soc['migration_policy']) - 50.0) * 0.25
-        + gdp_scale * 0.10
-        + (float(soc['education_policy']) - 50.0) * 0.15
-        + (float(soc['healthcare_policy']) - 50.0) * 0.10
+        20.0
+        - (float(soc['labour_policy']) - 50.0) * 0.28
+        - (float(soc['migration_policy']) - 50.0) * 0.32
+        + gdp_scale * 0.12
+        + (float(soc['education_policy']) - 50.0) * 0.20
+        + (float(soc['healthcare_policy']) - 50.0) * 0.15
     )
     age_structure = _clamp(age_structure, 0.0, 100.0)
 
@@ -493,10 +494,10 @@ def democraphics_policy2stats(policy_state, stat_state):
     urbanization = _clamp(urbanization, 0.0, 100.0)
 
     education_lvl = (
-        40.0
-        + float(soc['education_policy']) * 0.50
-        + (float(eco['public_spending']) - 50.0) * 0.20
-        + gdp_scale * 0.15
+        30.0
+        + float(soc['education_policy']) * 0.60
+        + (float(eco['public_spending']) - 50.0) * 0.25
+        + gdp_scale * 0.18
         - (float(eco['state_ownership']) - 50.0) * 0.25
         - (float(eco['labour_regulation']) - 50.0) * 0.25
     )
@@ -551,82 +552,82 @@ def people_policy2stats(policy_state, stat_state):
     migration_rate = _clamp(migration_rate, 1.0, 100.0)
 
     war_fatigue = (
-        30.0
-        - gdp_scale * 0.15
-        + (float(mil['military_budget']) - 3.0) * 15.00
-        + (float(mil['conscription']) - 50.0) * 0.20
-        + (float(pol['authoritarianism']) - 40.0) * 0.15
-        + (float(pol['censorship']) - 60.0) * 0.20
-        + (float(mil['force_purpose']) - 70.0) * 0.15
-        + (float(mil['intervention']) - 60.0) * 0.15
-        - (float(mil['sanctions_policy']) - 50.0) * 0.15
+        20.0
+        - gdp_scale * 0.20
+        + (float(mil['military_budget']) - 3.0) * 18.00
+        + (float(mil['conscription']) - 50.0) * 0.28
+        + (float(pol['authoritarianism']) - 40.0) * 0.22
+        + (float(pol['censorship']) - 60.0) * 0.28
+        + (float(mil['force_purpose']) - 70.0) * 0.22
+        + (float(mil['intervention']) - 60.0) * 0.22
+        - (float(mil['sanctions_policy']) - 50.0) * 0.20
     )
     war_fatigue = _clamp(war_fatigue, 0.0, 100.0)
 
     polarisation = (
-        40.0
-        + (float(pol['authoritarianism']) - 30.0) * 0.30
-        + (float(pol['censorship']) - 20.0) * 0.25
-        + (float(pol['power_struggle']) - 50.0) * 0.20
-        + (float(soc['social_policy']) - 50.0) * 0.15
-        + (float(cul['nationalism']) - 70.0) * 0.20
-        - (float(soc['education_policy']) - 80.0) * 0.15
-        - gdp_scale * 0.10
+        35.0
+        + (float(pol['authoritarianism']) - 30.0) * 0.35
+        + (float(pol['censorship']) - 20.0) * 0.30
+        + (float(pol['power_struggle']) - 50.0) * 0.24
+        + (float(soc['social_policy']) - 50.0) * 0.17
+        + (float(cul['nationalism']) - 70.0) * 0.25
+        - (float(soc['education_policy']) - 80.0) * 0.18
+        - gdp_scale * 0.12
     )
     polarisation = _clamp(polarisation, 0.0, 100.0)
     
     terrorism = (
-        30.0
-        - (float(eco['trade']) - 60.0) * 0.20
-        + (float(pol['authoritarianism']) - 30.0) * 0.30
-        + (float(pol['censorship']) - 30.0) * 0.15
-        + (100.0 - float(pol['election_fairness']) - 30.0) * 0.15
-        - (float(pol['internet_regulation']) - 30.0) * 0.15
-        - (float(cul['minority_autonomy']) - 40.0) * 0.20
-        + (float(cul['nationalism']) - 40.0) * 0.20
-        + gdp_scale * 0.30
+        20.0
+        - (float(eco['trade']) - 60.0) * 0.25
+        + (float(pol['authoritarianism']) - 30.0) * 0.40
+        + (float(pol['censorship']) - 30.0) * 0.22
+        + (100.0 - float(pol['election_fairness']) - 30.0) * 0.22
+        - (float(pol['internet_regulation']) - 30.0) * 0.20
+        - (float(cul['minority_autonomy']) - 40.0) * 0.28
+        + (float(cul['nationalism']) - 40.0) * 0.28
+        + gdp_scale * 0.35
     )
     terrorism = _clamp(terrorism, 1.0, 100.0)
 
     civil_unrest = (
-        15.0
-        + (float(pol['authoritarianism']) - 30.0) * 0.20
-        + (float(pol['censorship']) - 30.0) * 0.15
-        + (100.0 - float(pol['election_fairness']) - 30.0) * 0.15
-        + (float(pol['internet_regulation']) - 50.0) * 0.20
-        + (float(pol['ngo_regulation']) - 40.0) * 0.20
-        + (float(police['police_style']) - 40.0) * 0.20
-        - (float(cul['minority_autonomy']) - 40.0) * 0.20
-        + (float(cul['nationalism']) - 30.0) * 0.25
-        - (float(soc['social_policy']) - 50.0) * 0.10
-        - (float(soc['pension_policy']) - 50.0) * 0.05
-        - (float(soc['housing_policy']) - 50.0) * 0.10
-        - (float(soc['healthcare_policy']) - 50.0) * 0.10
-        - (float(soc['unemployment_policy']) - 50.0) * 0.05
-        + (float(soc['migration_policy']) - 30.0) * 0.20
+        10.0
+        + (float(pol['authoritarianism']) - 30.0) * 0.24
+        + (float(pol['censorship']) - 30.0) * 0.20
+        + (100.0 - float(pol['election_fairness']) - 30.0) * 0.20
+        + (float(pol['internet_regulation']) - 50.0) * 0.22
+        + (float(pol['ngo_regulation']) - 40.0) * 0.25
+        + (float(police['police_style']) - 40.0) * 0.24
+        - (float(cul['minority_autonomy']) - 40.0) * 0.22
+        + (float(cul['nationalism']) - 30.0) * 0.28
+        - (float(soc['social_policy']) - 50.0) * 0.12
+        - (float(soc['pension_policy']) - 50.0) * 0.08
+        - (float(soc['housing_policy']) - 50.0) * 0.12
+        - (float(soc['healthcare_policy']) - 50.0) * 0.12
+        - (float(soc['unemployment_policy']) - 50.0) * 0.06
+        + (float(soc['migration_policy']) - 30.0) * 0.22
     )
     civil_unrest = _clamp(civil_unrest, 0.0, 100.0)
 
     social_cohesion = (
-        40.0
-        + float(cul['religion_influence']) * 0.20
-        + (float(cul["nationalism"]) - 40.0) * 0.15
-        - (100.0 - float(cul["nation_ident"]) - 60.0) * 0.15
-        - float(soc['migration_policy']) * 0.15
-        + float(soc['social_policy']) * 0.20
-        + float(soc['education_policy']) * 0.15
+        30.0
+        + float(cul['religion_influence']) * 0.25
+        + (float(cul["nationalism"]) - 40.0) * 0.20
+        - (100.0 - float(cul["nation_ident"]) - 60.0) * 0.20
+        - float(soc['migration_policy']) * 0.22
+        + float(soc['social_policy']) * 0.28
+        + float(soc['education_policy']) * 0.20
     )
     social_cohesion = _clamp(social_cohesion, 1.0, 100.0)
 
     revolutionary_sentiments = (
-        20.0
-        + (float(pol['authoritarianism']) - 30.0) * 0.25
-        + (float(pol['censorship']) - 20.0) * 0.20
-        + (float(pol['power_struggle']) - 50.0) * 0.20
-        - (float(soc['social_policy']) - 50.0) * 0.20
-        + (float(cul['nationalism']) - 70.0) * 0.20
-        - (float(soc['education_policy']) - 80.0) * 0.25
-        - gdp_scale * 0.10
+        12.0
+        + (float(pol['authoritarianism']) - 30.0) * 0.32
+        + (float(pol['censorship']) - 20.0) * 0.28
+        + (float(pol['power_struggle']) - 50.0) * 0.28
+        - (float(soc['social_policy']) - 50.0) * 0.28
+        + (float(cul['nationalism']) - 70.0) * 0.28
+        - (float(soc['education_policy']) - 80.0) * 0.32
+        - gdp_scale * 0.15
     )
     revolutionary_sentiments = _clamp(revolutionary_sentiments, 0.0, 100.0)
 
@@ -644,13 +645,17 @@ def people_policy2stats(policy_state, stat_state):
     return stat_state.people
 
 def do_all(policy_state, stat_state):
-    economy_policy2stats(policy_state, stat_state)
-    innerworkings_policy2stats(policy_state, stat_state)
-    humanrights_policy2stats(policy_state, stat_state)
-    security_policy2stats(policy_state, stat_state)
-    democraphics_policy2stats(policy_state, stat_state)
-    people_policy2stats(policy_state, stat_state)
-    return stat_state
+    # Compute the policy-driven target on a copy so stat_state (which carries
+    # accumulated event effects) is not clobbered. go_thru then drifts
+    # stat_state toward this target one tick at a time.
+    target = copy.deepcopy(stat_state)
+    economy_policy2stats(policy_state, target)
+    innerworkings_policy2stats(policy_state, target)
+    humanrights_policy2stats(policy_state, target)
+    security_policy2stats(policy_state, target)
+    democraphics_policy2stats(policy_state, target)
+    people_policy2stats(policy_state, target)
+    return target
 
 if __name__ == "__main__":
     pass

@@ -8,7 +8,16 @@ def terrorist_att_isis_1(Event, Transition, stats):
         title='TERRORIST ATTACK ON PARIS',
         description="Today terrorist pledging allegiance to ISIS have attacked Paris, killing 68 people and injuring 200 more.",
         effects_pol={},
-        effects_stat={},
+        effects_stat={
+            'terrorism': 22,
+            'civil_unrest': 14,
+            'war_fatigue': 9,
+            'social_cohesion': -12,
+            'internal_security': -10,
+            'freedom_of_assembly': -5,
+            'legitimacy': -6,
+            'diplo_reputation': -2
+        },
         transitions=[
             Transition(
                 label="ATTACK",
@@ -31,10 +40,20 @@ def terrorist_att_isis_1(Event, Transition, stats):
         id='attack_res',
         prerequisites=[True],
         order_of_ops=1,
-        title='fuck you',
-        description="fuck you v2",
-        effects_pol={},
-        effects_stat={},
+        title='Post-attack emergency response',
+        description="Emergency services restore order in affected districts, but intelligence warnings suggest elevated risk in the coming weeks.",
+        effects_pol={
+            'police_funding': 6,
+            'surveillance': 5,
+            'internet_regulation': 3
+        },
+        effects_stat={
+            'internal_security': 6,
+            'cybersec': 4,
+            'terrorism': -6,
+            'freedom_to_privacy': -6,
+            'freedom_of_speech': -3
+        },
         transitions=[
             Transition(
                 label="womp womp",

@@ -9,7 +9,13 @@ def polarisat(Event, Transition, stats):
         title='You are elected Commissioner!',
         description="On the 15th of January 2026 you have been elected as the new Commisioner of the EU. You pulled record-breaking number of votes, 86% of the popular vote, uniting both sides of the political spectrum.",
         effects_pol={},
-        effects_stat={},
+        effects_stat={
+            'legitimacy': 8,
+            'social_cohesion': 6,
+            'polarisation': -5,
+            'civil_unrest': -2,
+            'diplo_reputation': 2
+        },
         transitions=[
             Transition(
                 label="Yay",
@@ -29,8 +35,16 @@ def polarisat(Event, Transition, stats):
         order_of_ops=1,
         title='Popularity among left/left-leaning voters plummets!',
         description="Your decisions have created a division between them, and your more conservative followers. This also results in a rapid decline of you popularity, to measly 54%.",
-        effects_pol={},
-        effects_stat={},
+        effects_pol={
+            'internet_regulation': 2
+        },
+        effects_stat={
+            'legitimacy': -12,
+            'social_cohesion': -15,
+            'polarisation': 16,
+            'civil_unrest': 10,
+            'freedom_of_assembly': -3
+        },
         transitions=[
             Transition(
                 label="Find common ground and appease them",
@@ -50,8 +64,16 @@ def polarisat(Event, Transition, stats):
         order_of_ops=2,
         title='Talks with the opposition are drawing out!',
         description="The opposition has proven innefective after over 1month of talks. They are demanding more and more radical decisions from us. We must do somthing!",
-        effects_pol={},
-        effects_stat={},
+        effects_pol={
+            'power_struggle': 4
+        },
+        effects_stat={
+            'state_capacity': -5,
+            'bureaucracy': 5,
+            'civil_unrest': 4,
+            'polarisation': 7,
+            'social_cohesion': -6
+        },
         transitions=[
             Transition(
                 label="Continue talks until a mutually benefical decision is reached",
@@ -76,8 +98,18 @@ def polarisat(Event, Transition, stats):
         order_of_ops=2,
         title='The opposition rallies people against you!',
         description="The people came to the streets to protest your recent actions!",
-        effects_pol={},
-        effects_stat={},
+        effects_pol={
+            'police_style': 4,
+            'surveillance': 3
+        },
+        effects_stat={
+            'civil_unrest': 16,
+            'polarisation': 15,
+            'social_cohesion': -12,
+            'freedom_of_assembly': -6,
+            'legitimacy': -10,
+            'internal_security': -3
+        },
         transitions=[
             Transition(
                 label="Find common ground with the other side & appease",

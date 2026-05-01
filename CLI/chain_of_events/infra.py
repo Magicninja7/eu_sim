@@ -75,7 +75,7 @@ class policies:
             'foreign_aid': 90, # none - a lot
         }
 
-        # culture
+        # culture 
         self.culture = {
             'religion_influence': 0, # secular - theocratic
             'nationalism': 60, # cosmopolitanism - nationalism
@@ -248,20 +248,20 @@ class last_incrimentation:
 
         # demographics
         self.demographics = {
-            'age_structure': 55, # avrg age
-            'population_growth': 1.4, # average children per woman
-            'urbanization': 75, # as percentage of people living in urban areas
-            'education_lvl': 45, # as ercentage of bachalor-educated people
-            'avg_age': 81.5, # as average age
+            'age_structure': 0,
+            'population_growth': 0,
+            'urbanization': 0,
+            'education_lvl': 0,
+            'avg_age': 0,
         }
 
         # people & political stability
         self.people = {
-            'migration_rate': 2.0, # net migration rate per 1000 people
-            'war_fatigue': 0, # no-war 0 high fatigue
-            'polarisation': 50, # variety-of-views - unitary-views
-            'terrorism': 50, # no-risk - inevetable
-            'civil_unrest': 10, # calm - riots
-            'social_cohesion': 70, # divided-society - unified-society
-            'revolutionary_sentiments': 1, # calm - storm the bastille!
+            'migration_rate': 0,
+            'war_fatigue': 0,
+            'polarisation': 0,
+            'terrorism': 0,
+            'civil_unrest': 0,
+            'social_cohesion': 0,
+            'revolutionary_sentiments': 0,
         }

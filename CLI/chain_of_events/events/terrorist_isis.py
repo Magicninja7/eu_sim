@@ -8,8 +8,16 @@ def terrorist_isis_1(Event, Transition, stats):
         order_of_ops=0,
         title='ISIS begins internet propaganda campaign!',
         description="Aimed at teens, its goal to recruit new jihadists in the EU. At the moment they're succeding, with the rate of ISIS-dictated attacks by EU citizens rapidly rising!",
-        effects_pol={'budget': -50},
-        effects_stat={},
+        effects_pol={
+            'internet_regulation': 8,
+            'surveillance': 4
+        },
+        effects_stat={
+            'terrorism': 18,
+            'internal_security': -8,
+            'social_cohesion': -6,
+            'civil_unrest': 6
+        },
         transitions=[
             Transition(
                 label='Open an investigation',

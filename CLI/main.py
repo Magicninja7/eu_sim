@@ -37,6 +37,6 @@ NAMES = {
 
 
 while True:
-    game_simul(EVENTS, CURR_OP, NXT_EVENT, NAMES, possible_ev, policy_state, EventProcessor)
+    game_simul(EVENTS, CURR_OP, NXT_EVENT, NAMES, possible_ev, policy_state, stats, EventProcessor)
     stats_togo = do_all(policy_state, stats)
     stats, las_increment = go_thru(stats, stats_togo, las_increment, types_of_stats)

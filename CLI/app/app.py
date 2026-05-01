@@ -5,7 +5,8 @@ from __future__ import annotations, print_function
 import sys
 import os
 from pathlib import Path
-from threading import Thread
+from collections import deque
+from threading import Lock, Thread
 from time import sleep
 
 ROOT = Path(__file__).resolve().parents[4]
@@ -21,6 +22,8 @@ from stavanger_app.web.CLI.chain_of_events.events.polarisation import polarisat
 from stavanger_app.web.CLI.chain_of_events.events.terrorist_isis import terrorist_isis_1
 from stavanger_app.web.CLI.chain_of_events.events.terrorist_att_isis_1 import terrorist_att_isis_1
 from stavanger_app.web.CLI.chain_of_events.events.close_elections import cls_elections
+from stavanger_app.web.CLI.chain_of_events.events.pension_shortfall import pension_shortfall
+from stavanger_app.web.CLI.generaliser.generaliser import generalise
 from flask import Flask, render_template, request, jsonify
 from typing import Any
 import random
@@ -28,25 +31,48 @@ import random
 policy_state = policies()
 stats_state = stats()
 
+notification_queue: deque[dict[str, Any]] = deque()
+notification_lock = Lock()
+notification_sequence = 0
+
 possible_ev = []
 las_increment = last_incrimentation()
+
+game_over = False
+collapsed_stats: list[str] = []
+
+
+def check_game_over() -> tuple[bool, list[str]]:
+    global game_over, collapsed_stats
+    if game_over:
+        return True, collapsed_stats
+    gen = generalise(stats_state)
+    fallen = [k for k, v in gen.items() if v <= 0]
+    if fallen:
+        game_over = True
+        collapsed_stats = fallen
+        return True, fallen
+    return False, []
+
 
 EVENTS_CLOSE_ELECTIONS = cls_elections(Event, Transition, stats_state)
 EVENTS_POLARISATION = polarisat(Event, Transition, stats_state)
 EVENTS_TERRORIST_ISIS_1 = terrorist_isis_1(Event, Transition, stats_state)
 EVENTS_TERRORIST_ATT_ISIS_1 = terrorist_att_isis_1(Event, Transition, stats_state)
+#EVENTS_PENSION_SHORTFALL = pension_shortfall(Event, Transition, stats_state)
 
 EVENTS = [EVENTS_POLARISATION, EVENTS_TERRORIST_ISIS_1, EVENTS_TERRORIST_ATT_ISIS_1, EVENTS_CLOSE_ELECTIONS]
-
-CURR_OP = {'EVENTS_POLARISATION': 0, 'EVENTS_TERRORIST_ISIS_1': 0, 'EVENTS_TERRORIST_ATT_ISIS_1': 0, 'EVENTS_CLOSE_ELECTIONS': 0}
-NXT_EVENT = {'EVENTS_POLARISATION': None, 'EVENTS_TERRORIST_ISIS_1': None, 'EVENTS_TERRORIST_ATT_ISIS_1': None, 'EVENTS_CLOSE_ELECTIONS': None}
 
 NAMES = {
     'POLARISATION': EVENTS_POLARISATION,
     'TERRORIST_ISIS_1': EVENTS_TERRORIST_ISIS_1,
     'TERRORIST_ATT_ISIS_1': EVENTS_TERRORIST_ATT_ISIS_1,
     'CLOSE_ELECTIONS': EVENTS_CLOSE_ELECTIONS
+    #'PENSION_SHORTFALL': EVENTS_PENSION_SHORTFALL
 }
+
+CURR_OP = {f'EVENTS_{name}': 0 for name in NAMES}
+NXT_EVENT = {f'EVENTS_{name}': None for name in NAMES}
 
 curr_day = 1
 dis_say_event = False
@@ -102,7 +128,7 @@ def create_app() -> Flask:
             return None
 
         coe_name, event_name = random.choice(possible)
-        engine = EventProcessor(NAMES[coe_name], policy_state)
+        engine = EventProcessor(NAMES[coe_name], policy_state, stats_state)
         event = engine.trigger(event_name)
         choices = event.available_choices(policy_state)
 
@@ -121,33 +147,67 @@ def create_app() -> Flask:
     @app.get("/")
     def index():
         ensure_current_event()
-        return render_template("index.html", curr_day=curr_day)
+        return render_template(
+            "index.html",
+            curr_date=f'{curr_day}/{curr_month}/{curr_year}',
+            gdp=stats_state.economy['gdp'],
+            tax_h=policy_state.taxation['high'],
+        )
 
-    @app.get("/api/day")
-    def api_day():
-        date = f'{curr_day}/{curr_month}/{curr_year}'
-        return jsonify({"date": date, "day": curr_day})
-    
-    @app.get("/api/stats")
-    def api_stats():
+    @app.get("/api/notifications")
+    def api_notifications():
+        return jsonify({"notifications": drain_notifications()})
+
+    @app.post("/api/notifications")
+    def api_push_notification():
+        payload = request.get_json(silent=True) or {}
+        description = payload.get("description")
+        classification = payload.get("classification")
+
+        if not description or not classification:
+            return jsonify({"error": "description and classification are required."}), 400
+
+        notification = send_notification(
+            description=str(description),
+            classification=str(classification),
+            date=str(payload.get("date")) if payload.get("date") else None,
+            timestamp=str(payload.get("timestamp")) if payload.get("timestamp") else None,
+            title=str(payload.get("title")) if payload.get("title") else None,
+        )
+        return jsonify({"ok": True, "notification": notification}), 201
+
+    @app.get("/api/status")
+    def api_status():
         global stats_state
         gdp = stats_state.economy['gdp']
         tax_l, tax_m, tax_h = policy_state.taxation['low'], policy_state.taxation['medium'], policy_state.taxation['high']
-        return jsonify({"gdp": gdp, "tax_l": tax_l, "tax_m": tax_m, "tax_h": tax_h})
+        gen = generalise(stats_state)
+        is_over, collapsed = check_game_over()
+        return jsonify({
+            "date": f'{curr_day}/{curr_month}/{curr_year}',
+            "day": curr_day,
+            "gdp": gdp,
+            "tax_l": tax_l,
+            "tax_m": tax_m,
+            "tax_h": tax_h,
+            "stats": gen,
+            "game_over": is_over,
+            "collapsed": collapsed,
+        })
 
     @app.get("/api/event")
     def api_event():
         global dis_say_event
 
-        if dis_say_event == True:
-            return jsonify({"done": True, "message": "An event has already occurred today. Wait for the next day."})
+        is_over, collapsed = check_game_over()
+        if is_over:
+            return jsonify({"done": True, "message": "Game over.", "game_over": True, "collapsed": collapsed})
 
         current = ensure_current_event()
 
         if current is None:
             message = state.get("last_message") or "No more events available."
             return jsonify({"done": True, "message": message})
-        dis_say_event = True
     
 
         event = current["event"]
@@ -169,6 +229,10 @@ def create_app() -> Flask:
     def api_choose():
         global stats_state, las_increment
 
+        is_over, collapsed = check_game_over()
+        if is_over:
+            return jsonify({"done": True, "message": "Game over.", "game_over": True, "collapsed": collapsed})
+
         payload = request.get_json(silent=True) or {}
         decision_id = payload.get("decisionId")
 
@@ -186,7 +250,7 @@ def create_app() -> Flask:
             return jsonify({"error": "Decision index out of range."}), 400
 
         coe_name = current["coe_name"]
-        engine = EventProcessor(NAMES[coe_name], policy_state)
+        engine = EventProcessor(NAMES[coe_name], policy_state, stats_state)
         next_event_id = engine.choose(choices[decision_index])
 
         def del_chain(deleted_event):
@@ -226,14 +290,27 @@ def create_app() -> Flask:
         stats_state, las_increment = go_thru(
             stats_state, stats_togo, las_increment, types_of_stats
         )
+
+        is_over, collapsed = check_game_over()
+        if is_over:
+            return jsonify({"ok": True, "done": True, "message": "Game over.", "game_over": True, "collapsed": collapsed})
+
         state["current"] = None
-        return jsonify({"ok": True})
+        next_current = ensure_current_event()
+        if next_current is None:
+            return jsonify({"ok": True, "done": True, "message": state.get("last_message") or "No more events available."})
+        event = next_current["event"]
+        decisions = [{"id": idx, "label": choice.label} for idx, choice in enumerate(next_current["choices"])]
+        return jsonify({"ok": True, "done": False, "description": event.description, "decisions": decisions})
 
     return app
 
 def day_update():
     global curr_day, curr_month, curr_year, dis_say_event, stats_state, las_increment
     while True:
+        sleep(2)
+        if check_game_over()[0]:
+            continue
         curr_day += 1
         curr_day, curr_month, curr_year = handle_days(curr_day, curr_month, curr_year)
 
@@ -241,8 +318,6 @@ def day_update():
         stats_state, las_increment = go_thru(
             stats_state, stats_togo, las_increment, types_of_stats
         )
-        dis_say_event = False
-        sleep(4)
         
 
 if __name__ == "__main__":

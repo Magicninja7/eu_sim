@@ -106,7 +106,7 @@ def open_ready_events(CURR_OP):
 
     return temp_possible
       
-def game_simul(EVENTS, CURR_OP, NXT_EVENT, NAMES, possible_ev, policy_state, EventProcessor):
+def game_simul(EVENTS, CURR_OP, NXT_EVENT, NAMES, possible_ev, policy_state, stats_state, EventProcessor):
     import random
     write_events_to_files(EVENTS, CURR_OP, NXT_EVENT, NAMES)
 
@@ -118,7 +118,7 @@ def game_simul(EVENTS, CURR_OP, NXT_EVENT, NAMES, possible_ev, policy_state, Eve
 
     coe_name, event_name = possible_ev.pop(random.randint(0, len(possible_ev)-1))
 
-    engine = EventProcessor(NAMES[coe_name], policy_state)
+    engine = EventProcessor(NAMES[coe_name], policy_state, stats_state)
 
     event = engine.trigger(event_name)
 

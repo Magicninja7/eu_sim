@@ -49,9 +49,11 @@ class Transition:
 
 
 class EventProcessor:
-    def __init__(self, events, state):
+    def __init__(self, events, policy_state, stats_state=None):
         self.events = events
-        self.state = state
+        self.policy_state = policy_state
+        # Backward compatibility: if stats_state is not provided, reuse policy_state.
+        self.stats_state = stats_state if stats_state is not None else policy_state
         self.current_event_id = None
 
     def trigger(self, event_id):
@@ -60,16 +62,16 @@ class EventProcessor:
         for k, v in event.effects_pol.items():
             category = next((cat for cat, items in types_of_policies.items() if k in items), None)
             
-            if category and hasattr(self.state, category):
-                category_dict = getattr(self.state, category) 
+            if category and hasattr(self.policy_state, category):
+                category_dict = getattr(self.policy_state, category) 
                 if k in category_dict:
                     category_dict[k] += v
 
         for k, v in event.effects_stat.items():
             category = next((cat for cat, items in types_of_stats.items() if k in items), None)
             
-            if category and hasattr(self.state, category):
-                category_dict = getattr(self.state, category) 
+            if category and hasattr(self.stats_state, category):
+                category_dict = getattr(self.stats_state, category) 
                 if k in category_dict:
                     category_dict[k] += v
         return event
