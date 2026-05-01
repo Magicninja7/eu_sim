@@ -1,0 +1,277 @@
+0.0 (big_election_win_fraud)
+You lead the ____, a ruling party that just won a shocking landslide victory, completely in contrast to the exit polls.The opposition ___, claims widespread electoral fraud. International observers are divided, the country is polarised, and TV networks are running 24/h coverage
+-> create independent audit -> 1.1
+-> dismiss claimes as lies -> 1.2
+-> Order removal of "harmful disinformation" -> 1.3
+
+1.
+1.1 (audit_big_election_win_fraud)
+You annoucne and audit, the public demands transparency. Who will conduct it?
+-> A parliamentary committee -> 2.10
+-> An executive review comission -> 2.11
+-> A judicial oversight panel -> 2.12
+
+1.2 (claims_lies_big_election_win_fraud)
+You call the allegations a "desperate losing hail mary". The opposition escalates rhetoric, news network begin investigative coverage. Protests start.
+-> increase anti-opposition rhetoric -> 2.20
+-> seek a back-channel compromise -> 2.21
+-> lower tone and call for unity during these instable times -> 1.1
+
+1.3 (removal_disinformation_big_election_win_fraud)
+Content alleging fraud is removed from major platforms under "national stability" provisions. Soon the ECHR opens a preliminary hearing review...
+-> Reverse the censorship -> 2.30
+-> Maintain censorship, increase pro-stability rhetoric -> 2.31
+
+
+2. 
+2.10 (parliamentary_committee_big_election_win_fraud)
+Houston there is a problem, you control the parliment. The opposition and press realise that; court complaints were filed and protests mobilised.
+-> tranfer audit to judiciary -> 2.12
+-> defend parliamentary neutrality -> n/d
+-> fast-track investigation and results before situation escalates -> n/d
+
+2.11 (exe_review_big_election_win_fraud)
+Even you allies are uncomfortable, you are summoned infront of the ECHR to give explenations. Choose your defence strategy.
+-> reassign audit to courts -> 2.12
+-> stand firm with it being "Fully constitutional and within spirit of the law" -> n/d
+-> announce compromise - parliamentary comission with foreign-led obserbers -> mb modified 2.10?
+
+2.12 (courts_audit_big_election_win_fraud)
+Courts begin review, situation on the streets begin to calm. TVs update situation hourly, investigative programs release. Emotions and distrust remain high
+-> respect full independence -> 1 event about calming down -> resolution
+-> Quietly control the judges 
+-> fuel propaganda during waiting period -> 2.20
+
+2.20 (propaganda_esc_big_election_win_fraud)
+Trust in the opposition trops drastically among your supporters. However independent press accuses you of disinformational campaigns. Foreign media begin reporting concerns.
+-> Investigate the media! look for "bias" and foreign agent involvment -> increase, hr step in
+-> Open a debate on public television -> debate event
+-> De-escalate narrative
+
+2.21 (negotiation_attmpt_big_election_win_fraud)
+You open talks with the opposition, what is your goal in this?
+-> joint public statement recognising original results -> 99.9% no
+-> Power-sharing concessions for backing down on election fraud allegations -> mb, lose control
+-> excersice delaying tactics, hoping for public losing their interest -> new event chain
+
+2.30 (censorship_rev_big_election_win_fraud)
+You frop the restrictions, ECHR shelves the case. However, you lose credibility in eyes of your most radical supporters, and opposition insists on fraud.
+-> see whats later
+
+2.31 (censorship_mant_big_election_win_fraud)
+The ECHR case continues, maintainment of censorship seen negatively. Protests continue and trust in you plummets
+2.310 (echr_ruling_big_election_win_fraud)
+The ECHR has ruled against you, forcing to conduct a judicial audit and temporarily removing you from power, until the audit is over. Cheering erupts from the opposition, as you allies back away from you.
+-> comply with ruling
+-> coup d'etat plot?
+
+
+
+
+pension shortfall
+Ministry of Finance has confirmed the dark scenario: public pension system deficit exceeds projections by ~4% gdp next year. Demographics are worsening, contributions shrinking and recipients growing. Leaked document says the system will become insolvent within 3 years.
+-> start working on a reform bill -> 1.1
+-> downplay issues as a temporary accounting imbalance having no translation into reality -> 1.2
+-> blame prev governemnt, and launch a investigation commision -> 1.3
+-> debt debt and more debt to patch the hole -> 1.4
+
+1.
+1.1 
+What is the main direction this bill will go?
+-> retirment age increase -> 2.10
+-> contrubution rate increase -> 2.11
+-> partial privatization of the system -> 2.12
+-> hybrid - small age increase, increase contribution, and introducing a private system -> 2.4
+
+1.2 
+Markets are nervous, media start investigating, opposition is calling you a liar. The markets react accordingly, with a 8% fall over the last 2 days.
+-> release a part of the fiscal drastically -> 2.20
+-> wait until next fiscal year, to that time deny everything -> 2.21
+-> attack media for spreading panic -> 2.22
+
+1.3
+You accuse the previous administration of negligence and delaying the problem. You launch a parlimentary commision; everyone but your most diehard supporters feel embarrased, at most.
+-> commision an independent and acturial audit -> 2.30
+-> Use the commision for political theatre -> 2.31
+
+1.4
+You add funds to the pension system via issuing sovereign debt. Bonds yield rise slightly.
+-> Issue domestic bonds -> 2.40
+-> Monetise deficit through the ECB -> 2.41
+
+
+2.
+2.10
+Raise the retirment age by 3 years. Young voters approve, labour unions and older citizens go to protests
+-> hold firm -> 3.100
+-> sit to negotation -> 3.101
+
+2.11
+Payroll contributions increase by 2%. Small and medium businesses 
+-> Split costs between employers and employees -> 3.110
+-> keep burden on employers -> 3.111
+-> implement a steep progressive tax system, burdening the richest firms more -> 3.112
+
+2.12
+You expand the private pension funds. Markets, especially from the newly expanded sector, recover. Older voters panic, social citizens file protests. 
+-> mandatory partial redirection contributions -> 3.120
+-> voluntary opt-in -> 3.120
+-> slow 10 year transition -> 3.120
+
+2.13
+You combine small retirement age increase, modest contribution rise, and slight benefit formula change. Markets recover, and public stops panicking.
+-> good
+
+2.20
+You release market projections, markets and the public slightly stablise. The opposition requires full transparency, though.
+-> open all acturial nooks -> 3.200
+-> ignore the demands -> 3.201
+
+2.21
+You accused the media of spreading panic and "economic sabotage", the public broadcaster spreads the narrative. All the other press, however, react strongly against.
+-> Investigate journalists leading anti-governemnt articles -> 3.210
+-> Invite opposition to talks -> #todo
+-> soften rhetoric -> 1.1
+
+2.22
+You refrain from taking any actions and stall. 6 months later, the deficit only worsens. Minister of finance says, a credit rating downgrade is imminient
+-> emergency reforms -> 3.220
+-> temporary rent freeze -> 3.221
+
+2.30
+Economists conduct interview. Their report confirms that without reforms, pensions will have to be dropped by 25% within 10years. Street protest intensify, both elderly and left-wing voters. Some report a fire.
+-> Use report to justify a reform package -> 3.300
+-> reject the "alarmist projections" -> 3.301
+
+2.31
+Commission hearing become a spectacle - however trust only declines. 
+-> pivot to a real reform -> 3.310
+-> double down on the blame narrative -> 3.311
+
+2.32
+Opposition demanfs a shared ownership of the reform bill.
+-> accept co-authorship -> 3.320
+-> collapse the talks, and accuse opposition of obstruction -> 2.321
+
+2.40
+Banks absorb bonds, yet the crowding out effect slows down gdp projections.
+-> structural reform within the year -> 1.1
+
+2.41
+Central bank indirectly supports deficit. Inflation rises gradually.
+-> impose price controls -> 3.410
+-> blame global factors -> 3.411
+
+3.
+3.100
+Protests intensify, and turn violent. Cases of police officers being beaten up. Protesters report police violents. several fires are seen throighout the credibility
+-> go to negotiations -> 3.101
+-> hold firm -> 4.1000
+
+3.101
+Protesters realise need for reform, however after weeks of negotiations, the lowest they'll go is: tightening retirenment by 3 years, but gradually with 3month increments every year
+-> accept 
+-> reject -> 4.1000
+
+3.110
+Costs are split between employers and employees. Businesses grumble but accept the compromise. Workers feel the pinch in net salaries.
+-> good
+
+3.111
+You keep the burden primarily on employers. Business associations threaten layoffs and protests.
+-> threaten enforcment for not strict compliance
+
+3.112
+You implement a steep progressive contribution system targeting the largest firms. Public support among lower to middle income voters rises sharply.
+-> good
+
+3.120
+Though protests from supporters of wider social programs, it proved a succesful solution to our budget issues
+-> good
+
+3.200
+You ignore calls for further transparency. Rating agencies interpret this as concealment. Though with the calming down of the situation, everyone is slowly forgetting.
+-> good
+
+3.220
+Under pressure of imminent downgrade, you introduce emergency reforms overnight. Parliament sits through the night.
+-> pass package using strict party discipline -> 4.2200
+-> allow free vote within coalition -> 4.2201
+
+3.221
+You freeze pension indexation temporarily. Inflation erodes purchasing power of retirees.
+-> introduce targeted compensation for poorest pensioners -> 4.2210
+
+3.300
+You use the economists report to justify a sweeping reform package. Public debate intensifies but credibility improves.
+-> propose hybrid reform (age + contributions + private pillar) -> 2.13
+-> focus only on retirement age increase -> 2.10
+
+3.301
+You reject the report as politically motivated. Independent economists respond publicly. Trust declines sharply.
+-> oh no -> 4.3010
+
+3.310
+You pivot toward real structural reform after the commission spectacle. Markets cautiously regain confidence.
+-> reopen talks with opposition -> 2.32
+-> draft reform solely within ruling coalition -> 4.3100
+
+3.311
+You double down on blaming previous governments. Supporters cheer, undecided voters drift away.
+-> call early elections to seek mandate -> snap_election chain
+-> continue narrative while avoiding reforms -> pension_crisis_event
+
+
+3.320
+You accept co-authorship of the reform bill. Political tension lowers but you must share credit.
+-> present joint reform proposal publicly -> 4.3200
+-> disagreements re-emerge over specifics -> 4.3201
+
+3.321
+Talks collapse; you accuse the opposition of obstructionism. Polarisation deepens.
+-> escalate rhetoric on public television -> 2.21
+-> return to talks -> 2.32
+
+3.410
+
+You impose temporary price controls to contain inflation. Public relief is immediate but shortages begin appearing.
+-> good
+
+3.411
+You blame global energy and supply chain pressures. International partners respond critically.
+-> request external advisory support -> 2.41
+-> continue national-sovereignty narrative -> economic_crisis chain
+
+4.
+4.1000
+You hold firm despite violent protests. Riot police are deployed nationwide. Several cities impose temporary curfews. International media begin broadcasting images of clashes. Coalition partners grow nervous.
+-> declare limited state of emergency in major cities -> political_crisis chain
+-> address the nation and offer partial concession -> 3.101
+-> order stricter crowd control measures -> authoritarian_shift crisis
+
+4.2200
+The emergency reform package passes under strict party discipline. Several MPs publicly express discomfort but vote along party lines. The opposition calls it “legislative violence.”
+-> good
+
+4.2201
+You allow a free vote within the coalition. Several MPs defect. The reform barely passes, but everyone sees the division within your bloc
+-> good -> party_division chain
+
+4.2210
+You introduce targeted compensation for the poorest pensioners. Fiscal cost increases but unrest softens. Middle-class retirees feel ignored, though
+-> good -> lower_budget
+
+4.3010
+Your rejection of the economists’ report backfires. A group of respected academics publish an open letter condemning your government. Student protests emerge.
+-> hold firm -> economic_crisis chain
+-> pivot to reform narrative -> 3.300
+
+4.3200
+You present a joint reform proposal publicly alongside opposition leaders. Markets respond positively, and the public calms down
+-> good
+
+4.3201
+Disagreements over specifics derail the joint effort. Each side blames the other for bad faith. Media frames it as “historic missed opportunity.”
+-> shit -> disagreement chain
+
+

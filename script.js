@@ -81,6 +81,7 @@ const statElements = STATS.reduce((acc, key) => {
 
 const statPulseTimers = {};
 const IMPACT_COOLDOWN = 900;
+const DRAG_COMMIT_THRESHOLD = 80;
 let lastPreviewSide = null;
 let lastImpactTime = 0;
 
@@ -166,7 +167,14 @@ function triggerGameOver() {
   const collapsed = STATS.filter((key) => stats[key] <= 0)
     .map((key) => `${ICONS[key]} depleted`)
     .join(' · ');
-  showStatus(`Crisis! You lost! Refresh to try again.`);
+  showStatus(`Crisis! ${collapsed}. Click anywhere to try again.`);
+  window.addEventListener('pointerdown', restartOnce, { once: true });
+}
+
+function restartOnce() {
+  if (gameOver) {
+    resetUI();
+  }
 }
 
 function setupDrag() {
@@ -203,10 +211,14 @@ function setupDrag() {
     questionCard.releasePointerCapture(activePointer);
     questionCard.classList.remove('dragging');
     isDragging = false;
-    const pickIndex = determineSide();
+    const dragDistance = Math.abs(translate.x);
+    const pickIndex = translate.x < 0 ? 0 : 1;
     resetCardPosition();
     clearPreview();
     activePointer = null;
+    if (dragDistance < DRAG_COMMIT_THRESHOLD) {
+      return;
+    }
     if (!gameOver) {
       applyChoice(pickIndex);
     }
@@ -232,11 +244,6 @@ function highlightAnswer(index) {
   answerZones.forEach((zone, idx) => {
     zone.classList.toggle('active', idx === index);
   });
-}
-
-function determineSide() {
-  const rect = questionCard.getBoundingClientRect();
-  return rect.left + rect.width / 2 < window.innerWidth / 2 ? 0 : 1;
 }
 
 function setCardPosition(x, y) {
