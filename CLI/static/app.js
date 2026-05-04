@@ -131,7 +131,7 @@ async function chooseDecision(decisionId) {
       body: JSON.stringify({ decisionId }),
     });
     const data = await res.json();
-    // Server returns next event inline — no second GET needed.
+    if (data.status) applyStatus(data.status);
     applyEventData(data);
   } finally {
     chooseInFlight = false;
@@ -284,9 +284,8 @@ function triggerGameOver(collapsed) {
   overlay.hidden = false;
 }
 
-// Single poll replaces the two separate pollDay + loadStatCounter intervals.
-async function pollStatus() {
-  const data = await fetchJson('/api/status');
+function applyStatus(data) {
+  if (!data) return;
   setText('dateCounter', data.date);
   if (typeof data.gdp === 'number') setText('gdpCounter', data.gdp);
   if (typeof data.tax_l === 'number') setText('taxCounterL', data.tax_l);
@@ -298,11 +297,16 @@ async function pollStatus() {
   if (data.stats) updateStats(data.stats);
   if (data.game_over) {
     triggerGameOver(data.collapsed || []);
-    return;
   }
-  const dayChanged = lastKnownDay === null || data.day !== lastKnownDay;
-  lastKnownDay = data.day;
-  if (dayChanged) {
+  if (typeof data.day === 'number') lastKnownDay = data.day;
+}
+
+async function pollStatus() {
+  const data = await fetchJson('/api/status');
+  const wasDay = lastKnownDay;
+  applyStatus(data);
+  if (data.game_over) return;
+  if (wasDay === null || data.day !== wasDay) {
     await loadEvent();
   }
 }
@@ -340,7 +344,13 @@ async function pollStatus() {
 
 (async function main() {
   initDecisionDragAndDrop();
+  try {
+    await fetch(API_BASE + '/api/reset', { method: 'POST' });
+  } catch (e) {}
+  gameIsOver = false;
+  const overlay = document.getElementById('gameOverlay');
+  if (overlay) overlay.hidden = true;
   await pollStatus();
 
-  setInterval(pollStatus, 2000);
+  setInterval(pollStatus, 1500);
 })();

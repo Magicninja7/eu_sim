@@ -90,6 +90,38 @@ def write_events_to_files(EVENTS, CURR_OP, NXT_EVENT, NAMES):
     random.shuffle(not_ids)
     write_to_files(set(ids), set(not_ids))
 
+def compute_ready_events(EVENTS, CURR_OP, NXT_EVENT, NAMES):
+    """In-memory replacement for write_events_to_files + open_ready_events.
+
+    Returns a shuffled list of [coe_name, event_name] pairs whose
+    prerequisites are currently satisfied.
+    """
+    import random as _random
+    ready = []
+    for event in EVENTS:
+        key = next(k for k, v in NAMES.items() if v is event)
+        curr_opp = CURR_OP[f'EVENTS_{key}']
+
+        if NXT_EVENT[f'EVENTS_{key}'] is None:
+            candidates = [e.id for e in event.values()
+                          if getattr(e, "order_of_ops", None) == curr_opp]
+        else:
+            candidates = [NXT_EVENT[f'EVENTS_{key}']]
+
+        for idd in candidates:
+            ok = True
+            for a in event[idd].prerequisites:
+                result = a() if callable(a) else a
+                if result is False:
+                    ok = False
+                    break
+            if ok:
+                ready.append([event['name'], idd])
+
+    _random.shuffle(ready)
+    return ready
+
+
 def open_ready_events(CURR_OP):
     temp_possible = []
     path = 'C:\\Users\\jtpta\\OneDrive\\Pulpit\\personal\\stavanger_app\\web\\CLI\\chain_of_events\\ready.txt'
