@@ -1,5 +1,5 @@
 This is a simulated politics game. It is based on events, some are random, and others are chained, meaning you choices will impact what further events you may get.
-Furthermore, each choice results in a slight policies and stat change, which slowly tick towards you general stats of a country, and if any reaches zero, you lose!
+Furthermore, each choice results in a slight policies and stat change, which every ingame day slowly tick towards you general stats of a country, and if any reaches zero, you lose! It uses an algorithm to define what event sways policies what way, and what are its results for your countries statistics!
 ![stuff](https://cdn.hackclub.com/019df3b1-b554-783c-a24c-1da713d60bb0/image.png)
 
 ## Explanations for what files do
