@@ -1,5 +1,4 @@
-// TODO: replace with your PythonAnywhere URL, e.g. "https://yourname.pythonanywhere.com"
-const API_BASE = "";
+const API_BASE = "https://magic2moral.pythonanywhere.com";
 
 async function fetchJson(url) {
   const res = await fetch(API_BASE + url, { cache: 'no-store' });

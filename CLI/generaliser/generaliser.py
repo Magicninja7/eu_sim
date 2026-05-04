@@ -15,7 +15,6 @@ ROOT = Path(__file__).resolve().parents[4]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from stavanger_app.web.CLI.chain_of_events.infra import stats
 import math
 
 
