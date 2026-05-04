@@ -26,6 +26,7 @@ from chain_of_events.events.close_elections import cls_elections
 from chain_of_events.events.pension_shortfall import pension_shortfall
 from generaliser.generaliser import generalise
 from flask import Flask, render_template, request, jsonify
+from flask_cors import CORS
 from typing import Any
 import random
 
@@ -119,6 +120,7 @@ def create_app() -> Flask:
     static_dir = os.path.join(os.path.dirname(__file__), '..', 'static')
     
     app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
 
     state: dict[str, Any] = {
         "current": None,

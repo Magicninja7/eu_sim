@@ -1,3 +1,2 @@
+POLARISATION,popularity_plummets,1
 TERRORIST_ISIS_1,internet_campaign,0
-POLARISATION,1st_election,0
-CLOSE_ELECTIONS,audit_big_election_win_fraud,1

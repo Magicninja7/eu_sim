@@ -1,5 +1,8 @@
+// TODO: replace with your PythonAnywhere URL, e.g. "https://yourname.pythonanywhere.com"
+const API_BASE = "";
+
 async function fetchJson(url) {
-  const res = await fetch(url, { cache: 'no-store' });
+  const res = await fetch(API_BASE + url, { cache: 'no-store' });
   if (!res.ok) {
     const err = new Error(`HTTP ${res.status} for ${url}`);
     err.status = res.status;
@@ -123,7 +126,7 @@ async function chooseDecision(decisionId) {
   if (card) card.classList.add('busy');
 
   try {
-    const res = await fetch('/api/choose', {
+    const res = await fetch(API_BASE + '/api/choose', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ decisionId }),

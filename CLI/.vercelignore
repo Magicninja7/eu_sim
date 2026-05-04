@@ -1,0 +1,14 @@
+app/
+api/
+chain_of_events/
+generaliser/
+pol_2_stat/
+random_event_gen/
+templates/
+*.py
+requirements.txt
+wsgi.py
+ideology.txt
+__pycache__/
+**/__pycache__/
+app.js
