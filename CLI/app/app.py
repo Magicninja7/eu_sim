@@ -25,7 +25,7 @@ from chain_of_events.events.terrorist_att_isis_1 import terrorist_att_isis_1
 from chain_of_events.events.close_elections import cls_elections
 from chain_of_events.events.pension_shortfall import pension_shortfall
 from generaliser.generaliser import generalise
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from typing import Any
 import random
@@ -150,16 +150,6 @@ def create_app() -> Flask:
         if state["current"] is None:
             state["current"] = select_next_event()
         return state["current"]
-
-    @app.get("/")
-    def index():
-        ensure_current_event()
-        return render_template(
-            "index.html",
-            curr_date=f'{curr_day}/{curr_month}/{curr_year}',
-            gdp=stats_state.economy['gdp'],
-            tax_h=policy_state.taxation['high'],
-        )
 
     @app.get("/api/notifications")
     def api_notifications():
