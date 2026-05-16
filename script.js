@@ -58,6 +58,10 @@ let gameOver = false;
 
 const questionCard = document.getElementById('question-card');
 const questionText = document.getElementById('question-text');
+const endScreen = document.getElementById('end-screen');
+const endTitle = document.getElementById('end-title');
+const endMessage = document.getElementById('end-message');
+const endSubmessage = document.getElementById('end-submessage');
 const answerElements = [
   document.getElementById('answer-left-text'),
   document.getElementById('answer-right-text')
@@ -97,7 +101,8 @@ function resetUI() {
   stats = { ...initialStats };
   deck = shuffle([...questions]);
   gameOver = false;
-  document.body.classList.remove('game-over');
+  document.body.classList.remove('game-over', 'game-win');
+  endScreen.setAttribute('aria-hidden', 'true');
   resetImpact();
   updateStatsUI();
   nextQuestion();
@@ -106,7 +111,8 @@ function resetUI() {
 
 function nextQuestion() {
   if (!deck.length) {
-    deck = shuffle([...questions]);
+    triggerWin();
+    return;
   }
   currentQuestion = deck.pop();
   questionText.textContent = currentQuestion.prompt;
@@ -163,11 +169,16 @@ function isCollapse() {
 
 function triggerGameOver() {
   gameOver = true;
+  currentQuestion = null;
   document.body.classList.add('game-over');
   const collapsed = STATS.filter((key) => stats[key] <= 0)
     .map((key) => `${ICONS[key]} depleted`)
     .join(' · ');
-  showStatus(`Crisis! ${collapsed}. Click anywhere to try again.`);
+  endTitle.textContent = 'Crisis!';
+  endMessage.textContent = collapsed ? `${collapsed}.` : 'The country collapsed.';
+  endSubmessage.textContent = 'You failed to keep the country running.';
+  endScreen.setAttribute('aria-hidden', 'false');
+  showStatus('');
   window.addEventListener('pointerdown', restartOnce, { once: true });
 }
 
@@ -175,6 +186,18 @@ function restartOnce() {
   if (gameOver) {
     resetUI();
   }
+}
+
+function triggerWin() {
+  gameOver = true;
+  currentQuestion = null;
+  document.body.classList.add('game-win');
+  endTitle.textContent = 'Congrats!';
+  endMessage.textContent = 'You kept the country running.';
+  endSubmessage.textContent = 'More events & content coming.';
+  endScreen.setAttribute('aria-hidden', 'false');
+  showStatus('');
+  window.addEventListener('pointerdown', restartOnce, { once: true });
 }
 
 function setupDrag() {

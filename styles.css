@@ -246,6 +246,74 @@ body.game-over .status {
   color: var(--text);
 }
 
+.end-screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  background: radial-gradient(circle at center, rgba(15, 15, 15, 0.95) 0%, rgba(5, 5, 5, 0.98) 70%);
+  z-index: 5;
+}
+
+body.game-win .end-screen,
+body.game-over .end-screen {
+  display: flex;
+  animation: endFadeIn 0.5s ease forwards;
+}
+
+body.game-win .question-card,
+body.game-win .answer,
+body.game-over .question-card,
+body.game-over .answer {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.end-title {
+  margin: 0 0 1.5rem;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text);
+}
+
+.end-message {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+  color: var(--text);
+  letter-spacing: 0.05em;
+}
+
+.end-submessage {
+  margin: 0 0 2.5rem;
+  font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+
+.end-hint {
+  margin: 0;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+@keyframes endFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 @media (max-width: 900px) {
   .playfield {
     gap: 2rem;
