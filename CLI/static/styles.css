@@ -577,6 +577,19 @@ html, body {
   letter-spacing: 0.04em;
 }
 
+.game-over-overlay.is-win .game-over-title {
+  color: #4ade80;
+}
+
+.game-over-hint {
+  margin-top: 28px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #777;
+}
+
 @media (max-width: 720px) {
   .notification-centre {
     width: calc(100vw - 14px);

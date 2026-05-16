@@ -98,12 +98,13 @@ function applyEventData(data) {
   const eventWindow = document.getElementById('eventWindow');
 
   if (data.game_over) {
-    triggerGameOver(data.collapsed || []);
+    triggerEnd('lose', { collapsed: data.collapsed || [] });
     if (eventWindow) eventWindow.hidden = true;
     return;
   }
 
   if (data.done) {
+    triggerEnd('win', { message: data.message });
     if (eventWindow) eventWindow.hidden = true;
     setText('eventDescription', '');
     renderDecisionZones([]);
@@ -271,17 +272,51 @@ function updateStats(stats) {
   }
 }
 
-function triggerGameOver(collapsed) {
+function triggerEnd(kind, opts) {
   if (gameIsOver) return;
   gameIsOver = true;
   const overlay = document.getElementById('gameOverlay');
+  const titleEl = document.getElementById('gameOverTitle');
   const reason = document.getElementById('gameOverReason');
   if (!overlay) return;
-  if (reason) {
-    const labels = collapsed.map(k => STAT_LABELS[k] || k).join(', ');
-    reason.textContent = `${labels} collapsed to zero.`;
+
+  overlay.classList.remove('is-win', 'is-lose');
+  if (kind === 'win') {
+    overlay.classList.add('is-win');
+    if (titleEl) titleEl.textContent = 'COUNTRY ENDURES';
+    if (reason) reason.textContent = (opts && opts.message) || 'You kept the country running.';
+  } else {
+    overlay.classList.add('is-lose');
+    if (titleEl) titleEl.textContent = 'GAME OVER';
+    if (reason) {
+      const collapsed = (opts && opts.collapsed) || [];
+      const labels = collapsed.map(k => STAT_LABELS[k] || k).join(', ');
+      reason.textContent = labels ? `${labels} collapsed to zero.` : 'A critical stat collapsed to zero.';
+    }
   }
   overlay.hidden = false;
+
+  // Defer the listener so the click that ended the game doesn't immediately restart it.
+  setTimeout(() => {
+    window.addEventListener('pointerdown', restartOnce, { once: true });
+  }, 50);
+}
+
+async function restartOnce() {
+  try {
+    await fetch(API_BASE + '/api/reset', { method: 'POST' });
+  } catch (e) {}
+  const overlay = document.getElementById('gameOverlay');
+  if (overlay) {
+    overlay.hidden = true;
+    overlay.classList.remove('is-win', 'is-lose');
+  }
+  gameIsOver = false;
+  lastKnownDay = null;
+  for (const key of Object.keys(prevStats)) delete prevStats[key];
+  try {
+    await pollStatus();
+  } catch (e) {}
 }
 
 function applyStatus(data) {
@@ -296,7 +331,7 @@ function applyStatus(data) {
   }
   if (data.stats) updateStats(data.stats);
   if (data.game_over) {
-    triggerGameOver(data.collapsed || []);
+    triggerEnd('lose', { collapsed: data.collapsed || [] });
   }
   if (typeof data.day === 'number') lastKnownDay = data.day;
 }
@@ -349,7 +384,10 @@ async function pollStatus() {
   } catch (e) {}
   gameIsOver = false;
   const overlay = document.getElementById('gameOverlay');
-  if (overlay) overlay.hidden = true;
+  if (overlay) {
+    overlay.hidden = true;
+    overlay.classList.remove('is-win', 'is-lose');
+  }
   await pollStatus();
 
   setInterval(pollStatus, 1500);
